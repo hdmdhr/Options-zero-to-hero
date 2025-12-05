@@ -90,6 +90,14 @@
         .modal.open .modal-content {
             transform: scale(1);
         }
+
+        /* Quiz Styling */
+        .option-btn {
+            transition: all 0.2s;
+        }
+        .option-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
 <body class="antialiased pb-20">
@@ -320,27 +328,37 @@
                 </div>
             </div>
 
-            <!-- GEMINI API FEATURE: QUIZ GENERATOR -->
+            <!-- HYBRID QUIZ SECTION -->
             <div class="mt-12 bg-indigo-900 rounded-xl p-8 text-white relative overflow-hidden">
                 <div class="relative z-10 text-center">
-                    <h3 class="text-2xl font-bold mb-2" data-i18n="quizTitle">✨ Gemini AI 挑战</h3>
-                    <p class="text-indigo-200 mb-6" data-i18n="quizSubtitle">不确定自己是否掌握了 Risk Reversal？让 AI 考考你。</p>
+                    <h3 class="text-2xl font-bold mb-2" data-i18n="quizTitle">✨ 今日挑战 (Daily Challenge)</h3>
+                    <p class="text-indigo-200 mb-6" data-i18n="quizSubtitle">检测一下你是否掌握了 Risk Reversal？</p>
                     
-                    <button id="generateQuizBtn" class="bg-gradient-to-r from-pink-500 to-indigo-500 hover:from-pink-600 hover:to-indigo-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105 flex items-center gap-2 mx-auto">
-                        <span class="text-xl">✨</span> <span data-i18n="quizBtn">生成今日挑战题</span>
-                    </button>
-
-                    <div id="quizContainer" class="hidden mt-8 bg-white/10 backdrop-blur-sm rounded-lg p-6 text-left max-w-2xl mx-auto border border-white/20">
-                        <div class="animate-pulse flex space-x-4">
-                            <div class="flex-1 space-y-4 py-1">
-                                <div class="h-4 bg-white/20 rounded w-3/4"></div>
-                                <div class="space-y-2">
-                                    <div class="h-4 bg-white/20 rounded"></div>
-                                    <div class="h-4 bg-white/20 rounded w-5/6"></div>
-                                </div>
-                            </div>
+                    <!-- STATIC QUIZ CONTAINER (Always Visible) -->
+                    <div id="staticQuizContainer" class="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-left max-w-2xl mx-auto border border-white/20 mb-8">
+                        <p class="text-lg font-bold mb-4" id="staticQText"></p>
+                        <ul class="space-y-2 mb-4" id="staticQOptions">
+                            <!-- Options injected via JS -->
+                        </ul>
+                        <button id="toggleAnswerBtn" class="text-sm bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded transition-colors">
+                            <span data-i18n="revealAnswerBtn">查看答案与解析</span>
+                        </button>
+                        <div id="staticAnswerContainer" class="hidden mt-4 pt-4 border-t border-white/20">
+                            <p class="font-bold text-green-400 mb-1" id="staticQCorrect"></p>
+                            <p class="text-sm text-gray-300" id="staticQExplain"></p>
                         </div>
-                        <p class="text-center text-sm text-indigo-300 mt-4" data-i18n="quizLoading">正在思考题目...</p>
+                    </div>
+
+                    <!-- DYNAMIC QUIZ GENERATOR (Requires Key) -->
+                    <div class="border-t border-indigo-700 pt-6">
+                         <p class="text-xs text-indigo-400 mb-3" data-i18n="quizAiPrompt">还想做更多题？使用 AI 生成无限题目 (需配置 API Key)</p>
+                        <button id="generateQuizBtn" class="bg-indigo-800 hover:bg-indigo-700 text-white border border-indigo-600 text-sm font-bold py-2 px-6 rounded-full shadow transition flex items-center gap-2 mx-auto">
+                            <span>⚡</span> <span data-i18n="quizBtn">生成新题目 (Generate New)</span>
+                        </button>
+                        
+                        <div id="dynamicQuizContainer" class="hidden mt-6 bg-black/20 rounded-lg p-6 text-left max-w-2xl mx-auto">
+                            <!-- Dynamic Content -->
+                        </div>
                     </div>
                 </div>
                 <!-- Decorative background elements -->
@@ -467,14 +485,25 @@
                 rrSummaryWin: "<strong>大涨:</strong> 也就是股价 > 115，你拥有 Call，收益无限。",
                 rrSummaryDraw: "<strong>震荡:</strong> 在 97.5 和 115 之间，不亏不赚（因为权利金相互抵消了）。自带“安全缓冲区”。",
                 rrSummaryLose: "<strong>大跌:</strong> 跌破 97.5，你需要按 97.5 买入股票。但这本来就是你心仪的“抄底价”。",
-                quizTitle: "✨ Gemini AI 挑战",
-                quizSubtitle: "不确定自己是否掌握了 Risk Reversal？让 AI 考考你。",
-                quizBtn: "生成今日挑战题",
+                quizTitle: "✨ 今日挑战 (Daily Challenge)",
+                quizSubtitle: "检测一下你是否掌握了 Risk Reversal？",
+                quizBtn: "生成新题目 (Generate New)",
+                quizAiPrompt: "还想做更多题？使用 AI 生成无限题目 (需配置 API Key)",
+                revealAnswerBtn: "查看答案与解析",
                 quizLoading: "正在思考题目...",
                 chatTitle: "Gemini 助教",
                 chatWelcome: "你好！我是你的 AI 期权助教。关于今天的 Call, Put 或者 Risk Reversal 策略，有什么不懂的都可以问我！",
                 chatPlaceholder: "输入你的问题...",
                 askAiBtn: "提问 AI 助教",
+                // Static Quiz Content
+                staticQText: "Risk Reversal (风险逆转) 策略的核心逻辑是：Sell Put 的目的是什么？",
+                staticQOptions: [
+                    "A. 赌股票大跌，赚取投机收益。",
+                    "B. 仅仅为了赚取期权费（收租）。",
+                    "C. 赚取权利金来补贴买 Call 的成本，并愿意在下跌时以行权价接盘买入股票。"
+                ],
+                staticQCorrect: "正确答案：C",
+                staticQExplain: "解析：Risk Reversal 的精髓在于“零成本”构建。卖出 Put 的核心目的是为买入 Call 提供资金支持，同时设定一个自己愿意接受的“抄底价”（Put 行权价）。",
                 // Charts Data
                 chartCaloriesLabel: "卡路里摄入 (kcal)",
                 chartCaloriesTitle: "暴饮暴食驱动的健身需求",
@@ -527,14 +556,25 @@
                 rrSummaryWin: "<strong>Rally:</strong> Price > 115. You own the Call. Unlimited profit.",
                 rrSummaryDraw: "<strong>Chop:</strong> Between 97.5 & 115. Breakeven (Premiums cancel out). Built-in buffer.",
                 rrSummaryLose: "<strong>Crash:</strong> Price < 97.5. You buy stock at 97.5. But that was your target dip-buy price anyway.",
-                quizTitle: "✨ Gemini AI Challenge",
-                quizSubtitle: "Mastered Risk Reversal? Let AI test you.",
-                quizBtn: "Generate Quiz",
+                quizTitle: "✨ Daily Challenge",
+                quizSubtitle: "Test your mastery of Risk Reversal.",
+                quizBtn: "Generate New (Requires Key)",
+                quizAiPrompt: "Want more practice? Use AI to generate infinite questions.",
+                revealAnswerBtn: "Reveal Answer & Explanation",
                 quizLoading: "Generating question...",
                 chatTitle: "Gemini Tutor",
                 chatWelcome: "Hello! I'm your AI Options Tutor. Ask me anything about Calls, Puts, or Risk Reversal!",
                 chatPlaceholder: "Ask a question...",
                 askAiBtn: "Ask AI Tutor",
+                // Static Quiz Content
+                staticQText: "In a Risk Reversal strategy, what is the primary purpose of Selling the Put?",
+                staticQOptions: [
+                    "A. To bet on a massive stock crash.",
+                    "B. Just to collect premium (income).",
+                    "C. To fund the purchase of the Call, while being willing to buy the stock at a discount if it drops."
+                ],
+                staticQCorrect: "Correct Answer: C",
+                staticQExplain: "Explanation: The essence of Risk Reversal is the 'Zero-Cost' setup. Selling the Put funds the Call, and acts as a Limit Order to buy the stock at a price you are happy with (the Put Strike).",
                 // Charts Data
                 chartCaloriesLabel: "Calories (kcal)",
                 chartCaloriesTitle: "Overeating driving Gym Demand",
@@ -587,14 +627,25 @@
                 rrSummaryWin: "<strong>高騰:</strong> 株価 > 115。Callを持っているので利益無限大。",
                 rrSummaryDraw: "<strong>横ばい:</strong> 97.5 〜 115。損益分岐（プレミアム相殺）。安全バッファあり。",
                 rrSummaryLose: "<strong>暴落:</strong> 株価 < 97.5。97.5で株を買う義務。でもそれは元々の「押し目買い」目標価格です。",
-                quizTitle: "✨ Gemini AI チャレンジ",
-                quizSubtitle: "Risk Reversalをマスターしましたか？AIがテストします。",
-                quizBtn: "クイズを生成",
+                quizTitle: "✨ 今日のチャレンジ",
+                quizSubtitle: "Risk Reversalをマスターしましたか？",
+                quizBtn: "新しい問題を生成 (API Keyが必要)",
+                quizAiPrompt: "もっと練習したいですか？AIを使って無限に問題を生成しましょう。",
+                revealAnswerBtn: "答えと解説を見る",
                 quizLoading: "出題中...",
                 chatTitle: "Gemini 講師",
                 chatWelcome: "こんにちは！AIオプション講師です。Call、Put、Risk Reversalについて何でも聞いてください！",
                 chatPlaceholder: "質問を入力...",
                 askAiBtn: "AI講師に質問",
+                // Static Quiz Content
+                staticQText: "Risk Reversal 戦略において、Putを売る（Sell Put）主な目的は何ですか？",
+                staticQOptions: [
+                    "A. 株価の大暴落に賭けるため。",
+                    "B. 単にプレミアム（収入）を得るため。",
+                    "C. Callを買う資金を調達しつつ、もし下がれば喜んでその価格で株を買うため。"
+                ],
+                staticQCorrect: "正解：C",
+                staticQExplain: "解説：Risk Reversalの真髄は「コストゼロ」にあります。Putを売ることでCallの購入資金を賄い、同時に自分が納得できる価格（Putの行使価格）での「指値買い注文」として機能させます。",
                 // Charts Data
                 chartCaloriesLabel: "摂取カロリー (kcal)",
                 chartCaloriesTitle: "過食が牽引するジム需要",
@@ -731,7 +782,28 @@
                 if (t[key]) el.placeholder = t[key];
             });
 
-            // 3. Update Charts
+            // 3. Update Static Quiz Content
+            const staticQText = document.getElementById('staticQText');
+            const staticQOptions = document.getElementById('staticQOptions');
+            const staticQCorrect = document.getElementById('staticQCorrect');
+            const staticQExplain = document.getElementById('staticQExplain');
+
+            if (staticQText) staticQText.textContent = t.staticQText;
+            if (staticQCorrect) staticQCorrect.textContent = t.staticQCorrect;
+            if (staticQExplain) staticQExplain.textContent = t.staticQExplain;
+
+            if (staticQOptions) {
+                staticQOptions.innerHTML = '';
+                t.staticQOptions.forEach(opt => {
+                    const li = document.createElement('li');
+                    li.className = 'bg-white/10 p-3 rounded option-btn cursor-pointer';
+                    li.textContent = opt;
+                    staticQOptions.appendChild(li);
+                });
+            }
+
+
+            // 4. Update Charts
             if (charts.calories) {
                 charts.calories.data.datasets[0].label = t.chartCaloriesLabel;
                 charts.calories.options.plugins.title.text = splitLabel(t.chartCaloriesTitle);
@@ -829,21 +901,30 @@
             appendMessage(responseText, false);
         });
 
-        // --- QUIZ GENERATOR LOGIC ---
+        // --- STATIC QUIZ LOGIC ---
+        const toggleAnswerBtn = document.getElementById('toggleAnswerBtn');
+        const staticAnswerContainer = document.getElementById('staticAnswerContainer');
+        
+        toggleAnswerBtn.addEventListener('click', () => {
+             staticAnswerContainer.classList.toggle('hidden');
+        });
+
+
+        // --- DYNAMIC QUIZ GENERATOR LOGIC ---
         const generateQuizBtn = document.getElementById('generateQuizBtn');
-        const quizContainer = document.getElementById('quizContainer');
+        const dynamicQuizContainer = document.getElementById('dynamicQuizContainer');
 
         generateQuizBtn.addEventListener('click', async () => {
              // Check if key is set first
             if (!localStorage.getItem('gemini_api_key')) {
                 openSettings();
-                alert("请先配置 API Key / Please set API Key");
+                alert(currentLang === 'zh' ? "请先配置 API Key / Please set API Key" : "Please set API Key");
                 return;
             }
 
-            quizContainer.classList.remove('hidden');
+            dynamicQuizContainer.classList.remove('hidden');
             const t = translations[currentLang];
-            quizContainer.innerHTML = `
+            dynamicQuizContainer.innerHTML = `
                 <div class="animate-pulse flex space-x-4">
                     <div class="flex-1 space-y-4 py-1">
                         <div class="h-4 bg-white/20 rounded w-3/4"></div>
@@ -859,11 +940,11 @@
             // Generate Quiz with Language-Specific Prompt
             const quizContent = await callGemini("Generate a Risk Reversal Quiz", systemPrompts[currentLang].quiz);
             
-            quizContainer.innerHTML = `
-                <div class="prose prose-invert max-w-none">
+            dynamicQuizContainer.innerHTML = `
+                <div class="prose prose-invert max-w-none text-white">
                     ${marked.parse(quizContent)}
                 </div>
-                <button onclick="document.getElementById('quizContainer').classList.add('hidden')" class="mt-4 text-xs text-indigo-300 hover:text-white underline">✕</button>
+                <button onclick="document.getElementById('dynamicQuizContainer').classList.add('hidden')" class="mt-4 text-xs text-indigo-300 hover:text-white underline">✕</button>
             `;
         });
 
@@ -1105,6 +1186,9 @@
                 }
             }
         });
+        
+        // Initialize with default language to populate static quiz
+        updateLanguage('zh');
 
     </script>
 </body>
