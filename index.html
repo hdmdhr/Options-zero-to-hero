@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>期权零基础：从小白到甚至不想买正股 - 第一集</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
+    <!-- Marked library for parsing Markdown in chat responses -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Chosen Palette: "Neon FinTech" (Vibrant/Energetic)
+         Primary: Indigo-600 (#4F46E5)
+         Secondary: Pink-500 (#EC4899)
+         Accent: Cyan-500 (#06B6D4)
+         Bg: Gray-100 (#F3F4F6)
+    -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&family=Roboto:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans SC', 'Noto Sans JP', 'Roboto', sans-serif;
+            background-color: #F3F4F6;
+            color: #1F2937;
+        }
+
+        /* Chart Container Styling - MANDATORY Requirements */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px; /* Max width constraint */
+            margin-left: auto;
+            margin-right: auto; /* Horizontally centered */
+            height: 350px; /* Default height */
+            max-height: 400px; /* Max height constraint */
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+
+        /* Custom Card Styling */
+        .info-card {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            border-top: 4px solid #4F46E5; /* Indigo accent */
+            transition: transform 0.2s;
+        }
+        .info-card:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Chat Widget Styling */
+        .chat-widget {
+            transition: all 0.3s ease-in-out;
+        }
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #c7c7c7;
+            border-radius: 3px;
+        }
+        
+        /* Markdown Content Styling within Chat */
+        .prose p { margin-bottom: 0.5em; }
+        .prose ul { list-style-type: disc; margin-left: 1.2em; margin-bottom: 0.5em; }
+        .prose strong { color: #4F46E5; }
+    </style>
+</head>
+<body class="antialiased pb-20">
+
+    <!-- Navigation / Header -->
+    <header class="bg-indigo-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold flex items-center gap-2">
+                    <span data-i18n="headerTitle">期权零基础</span>
+                    <span class="text-xs bg-pink-500 px-2 py-0.5 rounded-full" data-i18n="headerBadge">AI 增强版</span>
+                </h1>
+                <p class="text-sm text-indigo-200" data-i18n="headerSubtitle">Episode 1: 为什么我们要学期权？</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="hidden md:block text-sm font-semibold bg-indigo-800 px-3 py-1 rounded">
+                    From Zero to Hero
+                </div>
+                <!-- Language Selector -->
+                <select id="languageSelector" class="bg-indigo-600 text-white border border-indigo-400 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500">
+                    <option value="zh">🇨🇳 中文</option>
+                    <option value="en">🇺🇸 English</option>
+                    <option value="ja">🇯🇵 日本語</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 space-y-12">
+
+        <!-- SECTION 1: THE HOOK -->
+        <section id="intro" class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="order-2 md:order-1">
+                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-pink-500">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4" data-i18n="introTitle">感恩节投机：吃出来的机会？</h2>
+                    <p class="text-gray-600 mb-4 leading-relaxed" data-i18n="introText">
+                        故事从一个简单的逻辑开始：感恩节大家吃太多 -> 节后想要减肥 -> 健身房生意火爆。
+                        这也是为什么华尔街盯上了 <strong>Planet Fitness (星球健身)</strong>。但与其直接买股票，专家推荐了一个名字长到让人窒息的策略...
+                    </p>
+                    <div class="bg-indigo-50 p-4 rounded-lg">
+                        <p class="font-bold text-indigo-700 text-lg">"Bull Call Spread Risk Reversal"</p>
+                        <p class="text-xs text-indigo-500 mt-1" data-i18n="introStrategyNote">（这到底是什么缝合怪？）</p>
+                    </div>
+                </div>
+            </div>
+            <div class="order-1 md:order-2 flex flex-col items-center">
+                <div class="chart-container">
+                    <canvas id="caloriesChart"></canvas>
+                </div>
+                <p class="text-sm text-gray-500 mt-2 text-center" data-i18n="introChartCaption">3000大卡/顿的晚餐引发的投资蝴蝶效应</p>
+            </div>
+        </section>
+
+        <!-- SECTION 2: BACK TO BASICS - CALL OPTION -->
+        <section id="call-option" class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="mb-6 border-b pb-4">
+                <h2 class="text-3xl font-bold text-indigo-700 flex items-center gap-2">
+                    <span class="text-4xl">🏠</span> <span data-i18n="callTitle">Call (认购期权)</span>
+                </h2>
+                <p class="text-gray-500 mt-2" data-i18n="callSubtitle">核心逻辑：交定金，锁价格 (Buy Low, Sell High)</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3" data-i18n="callAnalogyTitle">类比：买房定金</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed" data-i18n="callAnalogyText">
+                        想象你看中一套100万的房子。你支付了 <strong>1万元定金 (权利金)</strong>，锁定了下个月用100万买房的权利。
+                    </p>
+                    <ul class="space-y-2 mb-6 text-sm">
+                        <li class="flex items-center gap-2">
+                            <span class="text-green-500 font-bold">✔</span>
+                            <span data-i18n="callScenarioWin"><strong>若房价涨到120万：</strong> 你按100万买入，转手卖出赚20万。回报率 2000%！</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-red-500 font-bold">✘</span>
+                            <span data-i18n="callScenarioLose"><strong>若房价跌到80万：</strong> 你放弃定金，只损失1万。房子不要了。</span>
+                        </li>
+                    </ul>
+                    <div class="bg-blue-50 p-4 rounded border border-blue-200">
+                        <h4 class="font-bold text-blue-800" data-i18n="callExampleTitle">股市实例：英伟达 (NVDA)</h4>
+                        <p class="text-sm text-blue-700 mt-1" data-i18n="callExampleText">
+                            股价 $100。你花 $5 买入 Call (行权价 $100)。<br>
+                            如果涨到 $150，你赚 $45 ($150 - $100 - $5)。<br>
+                            翻了9倍！这就是<strong>以小博大</strong>。
+                        </p>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <div class="chart-container">
+                        <canvas id="callPayoffChart"></canvas>
+                    </div>
+                    <p class="text-xs text-gray-400 text-center mt-2" data-i18n="callChartCaption">Call Option 损益曲线：风险有限，收益无限</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: BACK TO BASICS - PUT OPTION -->
+        <section id="put-option" class="bg-white rounded-2xl shadow-lg p-8 border-t-4 border-pink-500">
+            <div class="mb-6 border-b pb-4">
+                <h2 class="text-3xl font-bold text-pink-600 flex items-center gap-2">
+                    <span class="text-4xl">🚗</span> <span data-i18n="putTitle">Put (认沽期权)</span>
+                </h2>
+                <p class="text-gray-500 mt-2" data-i18n="putSubtitle">核心逻辑：买保险，防灾害 (Hedging / Protection)</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="order-2 md:order-1 chart-container">
+                    <canvas id="putProtectionChart"></canvas>
+                </div>
+                <div class="order-1 md:order-2">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3" data-i18n="putAnalogyTitle">类比：车险</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed" data-i18n="putAnalogyText">
+                        你买了股票怕跌？那就买 Put。就像给车买保险。
+                        如果股价崩盘（撞车），保险公司（卖Put的人）必须按<strong>原价</strong>接盘你的股票。
+                    </p>
+                    <div class="bg-pink-50 p-4 rounded border border-pink-200">
+                        <p class="text-sm text-pink-800" data-i18n="putActionText">
+                            <strong>Buy Put:</strong> 付出一笔小钱，获得“无论跌多少都能按原价卖出”的权利。<br>
+                            <strong>场景:</strong> 财报发布前，担心暴雷。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: THE BUFFETT MINDSET - SELLING PUTS -->
+        <section id="sell-put" class="bg-gray-800 text-white rounded-2xl shadow-xl p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h2 class="text-3xl font-bold text-cyan-400 mb-4" data-i18n="sellPutTitle">为什么要做“保险公司” (Sell Put)?</h2>
+                    <p class="text-gray-300 mb-6 text-lg leading-relaxed" data-i18n="sellPutIntro">
+                        初学者买保险，<strong>高手卖保险</strong>。
+                        如果你想像巴菲特一样思考，你不会单纯赌股票不跌，而是：
+                    </p>
+                    <div class="bg-gray-700 p-6 rounded-lg mb-6 border-l-4 border-cyan-400">
+                        <p class="italic text-lg" data-i18n="sellPutQuote">
+                            "我想买这只股票，但现在的价格太贵。如果跌到 $90，我愿意全仓接盘。"
+                        </p>
+                    </div>
+                    <p class="text-gray-300" data-i18n="sellPutLogic">
+                        你卖出 $90 的 Put，收取权利金。
+                        <br>1. <strong>没跌到 $90:</strong> 白赚权利金 (收租)。
+                        <br>2. <strong>跌到 $90:</strong> 按 $90 买入股票 (本来就想买的价格) - 权利金补贴。
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-gray-200 mb-4 text-center" data-i18n="sellPutChartTitle">实际持仓成本对比</h3>
+                    <div class="chart-container">
+                        <canvas id="sellPutChart"></canvas>
+                    </div>
+                    <p class="text-xs text-gray-400 text-center mt-2" data-i18n="sellPutChartCaption">Sell Put = 带补贴的限价买单</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: THE SOLUTION - RISK REVERSAL -->
+        <section id="risk-reversal" class="bg-gradient-to-br from-indigo-50 to-white rounded-2xl shadow-lg p-8 relative">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <h2 class="text-3xl font-bold text-indigo-800 mb-4" data-i18n="rrTitle">终极策略: Risk Reversal (风险逆转)</h2>
+                <p class="text-gray-600 text-lg" data-i18n="rrSubtitle">
+                    不用掏钱的“空手套白狼”？<br>
+                    <strong>逻辑：</strong> 用“愿意接盘的义务” (Sell Put) 赚来的钱，去买“上涨的定金” (Buy Call)。
+                </p>
+            </div>
+
+            <!-- Flow Diagram -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 items-stretch">
+                <!-- Step 1 -->
+                <div class="bg-white p-4 rounded-lg shadow border-2 border-pink-200 flex flex-col items-center text-center">
+                    <div class="text-2xl mb-2">🤝</div>
+                    <h4 class="font-bold text-pink-600">Sell Put</h4>
+                    <p class="text-xs text-gray-500 mt-2" data-i18n="rrStep1">
+                        卖出防跌保险<br>
+                        "跌破97.5我接盘"
+                    </p>
+                    <div class="mt-auto pt-4 font-bold text-green-600" data-i18n="rrStep1Profit">+ 收取权利金</div>
+                </div>
+                
+                <!-- Arrow -->
+                <div class="hidden md:flex items-center justify-center">
+                    <div class="text-4xl text-gray-300">➡️</div>
+                </div>
+                <div class="md:hidden flex items-center justify-center py-2">
+                    <div class="text-2xl text-gray-300">⬇️</div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-white p-4 rounded-lg shadow border-2 border-indigo-200 flex flex-col items-center text-center">
+                    <div class="text-2xl mb-2">🚀</div>
+                    <h4 class="font-bold text-indigo-600">Buy Call</h4>
+                    <p class="text-xs text-gray-500 mt-2" data-i18n="rrStep2">
+                        买入看涨权利<br>
+                        "涨过115我赚钱"
+                    </p>
+                    <div class="mt-auto pt-4 font-bold text-red-500" data-i18n="rrStep2Cost">- 支付权利金</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2">
+                     <div class="chart-container">
+                        <canvas id="riskReversalChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-inner">
+                    <h3 class="font-bold text-gray-800 mb-4" data-i18n="rrSummaryTitle">策略总结</h3>
+                    <ul class="space-y-4 text-sm text-gray-600">
+                        <li class="flex items-start">
+                            <span class="mr-2 mt-1 text-green-500">🟢</span>
+                            <span data-i18n="rrSummaryWin"><strong>大涨:</strong> 也就是股价 > 115，你拥有 Call，收益无限。</span>
+                        </li>
+                         <li class="flex items-start">
+                            <span class="mr-2 mt-1 text-yellow-500">🟡</span>
+                            <span data-i18n="rrSummaryDraw"><strong>震荡:</strong> 在 97.5 和 115 之间，不亏不赚（因为权利金相互抵消了）。自带“安全缓冲区”。</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="mr-2 mt-1 text-red-500">🔴</span>
+                            <span data-i18n="rrSummaryLose"><strong>大跌:</strong> 跌破 97.5，你需要按 97.5 买入股票。但这本来就是你心仪的“抄底价”。</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- GEMINI API FEATURE: QUIZ GENERATOR -->
+            <div class="mt-12 bg-indigo-900 rounded-xl p-8 text-white relative overflow-hidden">
+                <div class="relative z-10 text-center">
+                    <h3 class="text-2xl font-bold mb-2" data-i18n="quizTitle">✨ Gemini AI 挑战</h3>
+                    <p class="text-indigo-200 mb-6" data-i18n="quizSubtitle">不确定自己是否掌握了 Risk Reversal？让 AI 考考你。</p>
+                    
+                    <button id="generateQuizBtn" class="bg-gradient-to-r from-pink-500 to-indigo-500 hover:from-pink-600 hover:to-indigo-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105 flex items-center gap-2 mx-auto">
+                        <span class="text-xl">✨</span> <span data-i18n="quizBtn">生成今日挑战题</span>
+                    </button>
+
+                    <div id="quizContainer" class="hidden mt-8 bg-white/10 backdrop-blur-sm rounded-lg p-6 text-left max-w-2xl mx-auto border border-white/20">
+                        <div class="animate-pulse flex space-x-4">
+                            <div class="flex-1 space-y-4 py-1">
+                                <div class="h-4 bg-white/20 rounded w-3/4"></div>
+                                <div class="space-y-2">
+                                    <div class="h-4 bg-white/20 rounded"></div>
+                                    <div class="h-4 bg-white/20 rounded w-5/6"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-center text-sm text-indigo-300 mt-4" data-i18n="quizLoading">正在思考题目...</p>
+                    </div>
+                </div>
+                <!-- Decorative background elements -->
+                <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-pink-500 opacity-20 filter blur-3xl"></div>
+                <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 rounded-full bg-indigo-500 opacity-20 filter blur-3xl"></div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 py-8 mt-12 pb-24 md:pb-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">Generated by Gemini Canvas Infographics</p>
+            <p class="text-xs">
+                Data sources: Script based on "Thanksgiving Options Strategy". <br>
+                Disclaimer: Financial visuals are for educational purposes only. Not investment advice.
+            </p>
+            <p class="text-xs mt-4 text-gray-600">NO SVG USED. NO MERMAID JS USED.</p>
+        </div>
+    </footer>
+
+    <!-- GEMINI API FEATURE: FLOATING CHAT -->
+    <div id="geminiChatWidget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        <!-- Chat Window (Hidden by default) -->
+        <div id="chatWindow" class="hidden bg-white w-80 md:w-96 rounded-2xl shadow-2xl mb-4 flex flex-col border border-gray-200 overflow-hidden transform transition-all duration-300 origin-bottom-right">
+            <div class="bg-gradient-to-r from-indigo-600 to-indigo-800 p-4 flex justify-between items-center text-white">
+                <div class="flex items-center gap-2">
+                    <div class="bg-white/20 p-1 rounded-full">✨</div>
+                    <span class="font-bold" data-i18n="chatTitle">Gemini 助教</span>
+                </div>
+                <button id="closeChatBtn" class="hover:bg-white/10 rounded p-1">✕</button>
+            </div>
+            <div id="chatMessages" class="chat-messages h-80 overflow-y-auto p-4 space-y-4 bg-gray-50 text-sm">
+                <div class="flex gap-2">
+                    <div class="bg-indigo-100 text-indigo-800 p-3 rounded-lg rounded-tl-none max-w-[85%]" data-i18n="chatWelcome">
+                        你好！我是你的 AI 期权助教。关于今天的 Call, Put 或者 Risk Reversal 策略，有什么不懂的都可以问我！
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 bg-white border-t border-gray-100">
+                <form id="chatForm" class="flex gap-2">
+                    <input type="text" id="userQuery" placeholder="输入你的问题..." class="flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" data-i18n-placeholder="chatPlaceholder">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full p-2 w-10 h-10 flex items-center justify-center shadow-md transition-colors">
+                        ➤
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button id="toggleChatBtn" class="bg-gradient-to-r from-indigo-600 to-pink-500 hover:from-indigo-700 hover:to-pink-600 text-white rounded-full p-4 shadow-xl transform transition hover:scale-110 flex items-center gap-2 group">
+            <span class="text-2xl">✨</span>
+            <span class="font-bold hidden group-hover:inline max-w-0 group-hover:max-w-xs transition-all duration-500 overflow-hidden whitespace-nowrap" data-i18n="askAiBtn">提问 AI 助教</span>
+        </button>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- TRANSLATION DATA ---
+        const translations = {
+            zh: {
+                headerTitle: "期权零基础",
+                headerBadge: "AI 增强版",
+                headerSubtitle: "Episode 1: 为什么我们要学期权？",
+                introTitle: "感恩节投机：吃出来的机会？",
+                introText: "故事从一个简单的逻辑开始：感恩节大家吃太多 -> 节后想要减肥 -> 健身房生意火爆。这也是为什么华尔街盯上了 Planet Fitness (星球健身)。但与其直接买股票，专家推荐了一个名字长到让人窒息的策略...",
+                introStrategyNote: "（这到底是什么缝合怪？）",
+                introChartCaption: "3000大卡/顿的晚餐引发的投资蝴蝶效应",
+                callTitle: "Call (认购期权)",
+                callSubtitle: "核心逻辑：交定金，锁价格 (Buy Low, Sell High)",
+                callAnalogyTitle: "类比：买房定金",
+                callAnalogyText: "想象你看中一套100万的房子。你支付了 1万元定金 (权利金)，锁定了下个月用100万买房的权利。",
+                callScenarioWin: "<strong>若房价涨到120万：</strong> 你按100万买入，转手卖出赚20万。回报率 2000%！",
+                callScenarioLose: "<strong>若房价跌到80万：</strong> 你放弃定金，只损失1万。房子不要了。",
+                callExampleTitle: "股市实例：英伟达 (NVDA)",
+                callExampleText: "股价 $100。你花 $5 买入 Call (行权价 $100)。<br>如果涨到 $150，你赚 $45 ($150 - $100 - $5)。<br>翻了9倍！这就是<strong>以小博大</strong>。",
+                callChartCaption: "Call Option 损益曲线：风险有限，收益无限",
+                putTitle: "Put (认沽期权)",
+                putSubtitle: "核心逻辑：买保险，防灾害 (Hedging / Protection)",
+                putAnalogyTitle: "类比：车险",
+                putAnalogyText: "你买了股票怕跌？那就买 Put。就像给车买保险。如果股价崩盘（撞车），保险公司（卖Put的人）必须按<strong>原价</strong>接盘你的股票。",
+                putActionText: "<strong>Buy Put:</strong> 付出一笔小钱，获得“无论跌多少都能按原价卖出”的权利。<br><strong>场景:</strong> 财报发布前，担心暴雷。",
+                sellPutTitle: "为什么要做“保险公司” (Sell Put)?",
+                sellPutIntro: "初学者买保险，<strong>高手卖保险</strong>。如果你想像巴菲特一样思考，你不会单纯赌股票不跌，而是：",
+                sellPutQuote: "\"我想买这只股票，但现在的价格太贵。如果跌到 $90，我愿意全仓接盘。\"",
+                sellPutLogic: "你卖出 $90 的 Put，收取权利金。<br>1. <strong>没跌到 $90:</strong> 白赚权利金 (收租)。<br>2. <strong>跌到 $90:</strong> 按 $90 买入股票 (本来就想买的价格) - 权利金补贴。",
+                sellPutChartTitle: "实际持仓成本对比",
+                sellPutChartCaption: "Sell Put = 带补贴的限价买单",
+                rrTitle: "终极策略: Risk Reversal (风险逆转)",
+                rrSubtitle: "不用掏钱的“空手套白狼”？<br><strong>逻辑：</strong> 用“愿意接盘的义务” (Sell Put) 赚来的钱，去买“上涨的定金” (Buy Call)。",
+                rrStep1: "卖出防跌保险<br>\"跌破97.5我接盘\"",
+                rrStep1Profit: "+ 收取权利金",
+                rrStep2: "买入看涨权利<br>\"涨过115我赚钱\"",
+                rrStep2Cost: "- 支付权利金",
+                rrSummaryTitle: "策略总结",
+                rrSummaryWin: "<strong>大涨:</strong> 也就是股价 > 115，你拥有 Call，收益无限。",
+                rrSummaryDraw: "<strong>震荡:</strong> 在 97.5 和 115 之间，不亏不赚（因为权利金相互抵消了）。自带“安全缓冲区”。",
+                rrSummaryLose: "<strong>大跌:</strong> 跌破 97.5，你需要按 97.5 买入股票。但这本来就是你心仪的“抄底价”。",
+                quizTitle: "✨ Gemini AI 挑战",
+                quizSubtitle: "不确定自己是否掌握了 Risk Reversal？让 AI 考考你。",
+                quizBtn: "生成今日挑战题",
+                quizLoading: "正在思考题目...",
+                chatTitle: "Gemini 助教",
+                chatWelcome: "你好！我是你的 AI 期权助教。关于今天的 Call, Put 或者 Risk Reversal 策略，有什么不懂的都可以问我！",
+                chatPlaceholder: "输入你的问题...",
+                askAiBtn: "提问 AI 助教",
+                // Charts Data
+                chartCaloriesLabel: "卡路里摄入 (kcal)",
+                chartCaloriesTitle: "暴饮暴食驱动的健身需求",
+                chartCallLabel: "盈亏金额 ($)",
+                chartCallTitle: "Call Payoff: 股价涨得越高赚得越多",
+                chartPutLabels: ["裸奔持有 (无保护)", "持有 Put 保护"],
+                chartPutLabel: "股价腰斩时的亏损 ($)",
+                chartPutTitle: "当股价从 $100 跌到 $50",
+                chartSellPutLabels: ["直接买入现价股票", "卖出 Put 接盘"],
+                chartSellPutLabel: "实际持仓成本 ($)",
+                chartSellPutTitle: "巴菲特如何用\"折扣价\"买股",
+                chartRRLabel: "Risk Reversal 损益",
+                chartRRTitle: "策略表现：下有接盘，上有暴利，中间躺平"
+            },
+            en: {
+                headerTitle: "Options from Zero",
+                headerBadge: "AI Enhanced",
+                headerSubtitle: "Episode 1: Why learn Options?",
+                introTitle: "Thanksgiving Speculation",
+                introText: "Simple logic: Thanksgiving Overeating -> Post-holiday Weight Loss -> Gym Boom. That's why Wall Street is eyeing <strong>Planet Fitness</strong>. But experts recommend a strategy with a terrifyingly long name...",
+                introStrategyNote: "(What is this Frankenstein strategy?)",
+                introChartCaption: "Investment butterfly effect from a 3000 kcal dinner",
+                callTitle: "Call Option",
+                callSubtitle: "Logic: Down payment to lock price (Buy Low, Sell High)",
+                callAnalogyTitle: "Analogy: House Deposit",
+                callAnalogyText: "You see a $1M house. You pay <strong>$10k deposit (Premium)</strong> to lock the right to buy at $1M next month.",
+                callScenarioWin: "<strong>Price hits $1.2M:</strong> Buy at $1M, sell at $1.2M. Profit $200k (2000% return)!",
+                callScenarioLose: "<strong>Price drops to $800k:</strong> Walk away. Lose only deposit ($10k).",
+                callExampleTitle: "Stock Example: NVIDIA (NVDA)",
+                callExampleText: "Stock $100. Buy Call (Strike $100) for $5.<br>If it hits $150, you earn $45 ($150 - $100 - $5).<br>9x Return! This is <strong>Leverage</strong>.",
+                callChartCaption: "Call Payoff: Limited Risk, Unlimited Upside",
+                putTitle: "Put Option",
+                putSubtitle: "Logic: Insurance against disaster (Hedging)",
+                putAnalogyTitle: "Analogy: Car Insurance",
+                putAnalogyText: "Afraid your stock will crash? Buy a Put. Like car insurance. If it crashes, the insurer (Put Seller) MUST buy your stock at the <strong>Original Price</strong>.",
+                putActionText: "<strong>Buy Put:</strong> Pay small premium for right to sell at original price.<br><strong>Scenario:</strong> Earnings report protection.",
+                sellPutTitle: "Why be the \"Insurer\" (Sell Put)?",
+                sellPutIntro: "Beginners buy insurance, <strong>Pros sell insurance</strong>. Like Buffett, you don't just gamble, you say:",
+                sellPutQuote: "\"I want to buy this stock, but it's too expensive. If it drops to $90, I'll buy it all.\"",
+                sellPutLogic: "Sell $90 Put, collect premium.<br>1. <strong>Above $90:</strong> Keep premium (Free money).<br>2. <strong>Drops to $90:</strong> Buy at $90 (Target Price) - Premium subsidy.",
+                sellPutChartTitle: "Cost Basis Comparison",
+                sellPutChartCaption: "Sell Put = Limit Order with Subsidy",
+                rrTitle: "Ultimate Strategy: Risk Reversal",
+                rrSubtitle: "Zero-Cost Entry?<br><strong>Logic:</strong> Use money from \"Obligation to Buy\" (Sell Put) to fund \"Right to Buy\" (Buy Call).",
+                rrStep1: "Sell Downside Insurance<br>\"I'll buy if < 97.5\"",
+                rrStep1Profit: "+ Collect Premium",
+                rrStep2: "Buy Upside Potential<br>\"I profit if > 115\"",
+                rrStep2Cost: "- Pay Premium",
+                rrSummaryTitle: "Strategy Summary",
+                rrSummaryWin: "<strong>Rally:</strong> Price > 115. You own the Call. Unlimited profit.",
+                rrSummaryDraw: "<strong>Chop:</strong> Between 97.5 & 115. Breakeven (Premiums cancel out). Built-in buffer.",
+                rrSummaryLose: "<strong>Crash:</strong> Price < 97.5. You buy stock at 97.5. But that was your target dip-buy price anyway.",
+                quizTitle: "✨ Gemini AI Challenge",
+                quizSubtitle: "Mastered Risk Reversal? Let AI test you.",
+                quizBtn: "Generate Quiz",
+                quizLoading: "Generating question...",
+                chatTitle: "Gemini Tutor",
+                chatWelcome: "Hello! I'm your AI Options Tutor. Ask me anything about Calls, Puts, or Risk Reversal!",
+                chatPlaceholder: "Ask a question...",
+                askAiBtn: "Ask AI Tutor",
+                // Charts Data
+                chartCaloriesLabel: "Calories (kcal)",
+                chartCaloriesTitle: "Overeating driving Gym Demand",
+                chartCallLabel: "Profit/Loss ($)",
+                chartCallTitle: "Call Payoff: The higher it goes, the more you make",
+                chartPutLabels: ["Unprotected", "With Put Protection"],
+                chartPutLabel: "Loss on 50% Crash ($)",
+                chartPutTitle: "When stock drops $100 -> $50",
+                chartSellPutLabels: ["Buy Stock Now", "Sell Put Entry"],
+                chartSellPutLabel: "Cost Basis ($)",
+                chartSellPutTitle: "Buffett's Discount Entry",
+                chartRRLabel: "Risk Reversal P/L",
+                chartRRTitle: "Performance: Downside Buy, Upside Profit, Flat Middle"
+            },
+            ja: {
+                headerTitle: "ゼロから始めるオプション",
+                headerBadge: "AI搭載",
+                headerSubtitle: "第1話：なぜオプションを学ぶのか？",
+                introTitle: "感謝祭の投機：食べ過ぎがチャンス？",
+                introText: "単純なロジックです。感謝祭で食べ過ぎる -> 減量したくなる -> ジムが儲かる。だからウォール街は <strong>Planet Fitness</strong> に注目しています。しかし専門家は恐ろしく長い名前の戦略を推奨しています...",
+                introStrategyNote: "（フランケンシュタインのような戦略？）",
+                introChartCaption: "3000kcalの夕食が引き起こす投資のバタフライ効果",
+                callTitle: "Call (コールオプション)",
+                callSubtitle: "ロジック：手付金で価格をロック (安く買って高く売る)",
+                callAnalogyTitle: "例え：家の手付金",
+                callAnalogyText: "1億円の家を見つけたとします。<strong>100万円の手付金（プレミアム）</strong>を払い、来月1億円で買う権利を確保します。",
+                callScenarioWin: "<strong>1.2億円に高騰：</strong> 1億で買い、1.2億で売る。2000万円の利益 (20倍)！",
+                callScenarioLose: "<strong>8000万円に暴落：</strong> 権利放棄。損失は手付金の100万円のみ。",
+                callExampleTitle: "株式の例：NVIDIA (NVDA)",
+                callExampleText: "株価 $100。$5でCall (行使価格 $100) を購入。<br>$150になれば、$45の利益 ($150 - $100 - $5)。<br>9倍のリターン！これが<strong>レバレッジ</strong>です。",
+                callChartCaption: "Callの損益：リスク限定、利益無限大",
+                putTitle: "Put (プットオプション)",
+                putSubtitle: "ロジック：災害保険 (ヘッジ)",
+                putAnalogyTitle: "例え：自動車保険",
+                putAnalogyText: "株価暴落が怖い？ならPutを買いましょう。保険のようなものです。暴落しても、保険会社（Putの売り手）は<strong>元の価格</strong>であなたの株を買い取らなければなりません。",
+                putActionText: "<strong>Buy Put:</strong> 少額で「元の価格で売る権利」を買う。<br><strong>場面:</strong> 決算発表前の暴落対策。",
+                sellPutTitle: "なぜ「保険会社」になるのか (Sell Put)?",
+                sellPutIntro: "初心者は保険を買い、<strong>プロは保険を売ります</strong>。バフェットのように考えましょう：",
+                sellPutQuote: "「この株を買いたいが、今は高すぎる。もし$90まで下がったら、全力で買う。」",
+                sellPutLogic: "$90のPutを売り、プレミアムを受け取る。<br>1. <strong>$90以上:</strong> プレミアム丸儲け。<br>2. <strong>$90に下落:</strong> $90で株を買う (目標価格) - プレミアム分の割引。",
+                sellPutChartTitle: "取得コストの比較",
+                sellPutChartCaption: "Sell Put = 補助金付きの指値注文",
+                rrTitle: "究極の戦略: Risk Reversal",
+                rrSubtitle: "タダでエントリー？<br><strong>ロジック：</strong> 「買う義務」(Sell Put) で得た金で、「買う権利」(Buy Call) を買う。",
+                rrStep1: "下落保険を売る<br>「97.5以下なら買うよ」",
+                rrStep1Profit: "+ プレミアム受取",
+                rrStep2: "上昇益を買う<br>「115超えたら利益」",
+                rrStep2Cost: "- プレミアム支払",
+                rrSummaryTitle: "戦略まとめ",
+                rrSummaryWin: "<strong>高騰:</strong> 株価 > 115。Callを持っているので利益無限大。",
+                rrSummaryDraw: "<strong>横ばい:</strong> 97.5 〜 115。損益分岐（プレミアム相殺）。安全バッファあり。",
+                rrSummaryLose: "<strong>暴落:</strong> 株価 < 97.5。97.5で株を買う義務。でもそれは元々の「押し目買い」目標価格です。",
+                quizTitle: "✨ Gemini AI チャレンジ",
+                quizSubtitle: "Risk Reversalをマスターしましたか？AIがテストします。",
+                quizBtn: "クイズを生成",
+                quizLoading: "出題中...",
+                chatTitle: "Gemini 講師",
+                chatWelcome: "こんにちは！AIオプション講師です。Call、Put、Risk Reversalについて何でも聞いてください！",
+                chatPlaceholder: "質問を入力...",
+                askAiBtn: "AI講師に質問",
+                // Charts Data
+                chartCaloriesLabel: "摂取カロリー (kcal)",
+                chartCaloriesTitle: "過食が牽引するジム需要",
+                chartCallLabel: "損益額 ($)",
+                chartCallTitle: "Call Payoff: 上がるほど儲かる",
+                chartPutLabels: ["保護なし", "Put保護あり"],
+                chartPutLabel: "暴落時の損失 ($)",
+                chartPutTitle: "株価が $100 -> $50 に暴落した場合",
+                chartSellPutLabels: ["現物買い", "Put売りエントリー"],
+                chartSellPutLabel: "取得コスト ($)",
+                chartSellPutTitle: "バフェット流の割引エントリー",
+                chartRRLabel: "Risk Reversal 損益",
+                chartRRTitle: "パフォーマンス：下がれば買い、上がれば爆益、中間は静観"
+            }
+        };
+
+        // --- GEMINI API CONFIGURATION ---
+        const apiKey = ""; // System provides this at runtime
+        let currentLang = 'zh';
+
+        const systemPrompts = {
+            zh: {
+                tutor: "你是一位专业的金融期权导师 'Gemini'，正在为初学者讲解《从零开始学期权》的课程。你的语言风格温暖、专业且幽默，善于使用比喻（如买房定金比喻Call，车险比喻Put）。回答请保持简练（100字以内），重点解释用户关于 Call, Put, Sell Put, Risk Reversal 等概念的疑惑。请用中文回答。",
+                quiz: "你是一个期权考试出题机。请根据'Risk Reversal'策略（Sell Put + Buy Call）生成一道单项选择题。题目要考察用户对'如果股价下跌会发生什么'或者'如果股价大涨会发生什么'的理解。请直接返回 Markdown 格式，包含：\n1. **题目**\n2. 选项 A, B, C\n3. **答案与解析**（默认折叠或在最后显示）。不要使用 JSON。请用中文出题。"
+            },
+            en: {
+                tutor: "You are a professional financial options tutor named 'Gemini', teaching a 'Zero to Hero Options' course. Your style is warm, professional, and humorous, using metaphors (e.g., House Deposit for Call, Car Insurance for Put). Keep answers concise (under 100 words). Explain Call, Put, Sell Put, Risk Reversal concepts clearly. Please answer in English.",
+                quiz: "You are an options exam generator. Generate a multiple-choice question based on the 'Risk Reversal' strategy (Sell Put + Buy Call). Test the user's understanding of what happens if the stock crashes or rallies. Return strictly Markdown format containing: \n1. **Question**\n2. Options A, B, C\n3. **Answer & Explanation** (Hidden or at the end). Do not use JSON. Please generate in English."
+            },
+            ja: {
+                tutor: "あなたは「ゼロから始めるオプション取引」コースを教えるプロの金融オプション講師 'Gemini' です。スタイルは温かく、専門的で、ユーモラスに（例：Callは家の手付金、Putは自動車保険）。回答は簡潔に（200文字以内）。Call、Put、Sell Put、Risk Reversalの概念を明確に説明してください。日本語で回答してください。",
+                quiz: "あなたはオプション取引の試験作成機です。「Risk Reversal」戦略（Sell Put + Buy Call）に基づいて多肢選択問題を1つ作成してください。株価が暴落または高騰した場合に何が起こるかをテストします。JSONは使用せず、以下のMarkdown形式で返してください：\n1. **問題**\n2. 選択肢 A, B, C\n3. **正解と解説**（折りたたむか最後に表示）。日本語で作成してください。"
+            }
+        };
+
+        async function callGemini(prompt, systemInstruction = "") {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: systemInstruction }] }
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const data = await response.json();
+                return data.candidates?.[0]?.content?.parts?.[0]?.text || (currentLang === 'zh' ? "抱歉，我现在无法回答，请稍后再试。" : "Sorry, I cannot answer right now.");
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                return currentLang === 'zh' ? "连接 AI 服务出错，请检查网络或 API Key。" : "Connection error. Please check API Key.";
+            }
+        }
+
+        // --- LANGUAGE SWITCHING LOGIC ---
+        const languageSelector = document.getElementById('languageSelector');
+        
+        // Store chart instances globally to update them
+        const charts = {};
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+
+            // 1. Update Text Content
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) {
+                    el.innerHTML = t[key]; // Use innerHTML to support bold tags
+                }
+            });
+
+            // 2. Update Placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (t[key]) el.placeholder = t[key];
+            });
+
+            // 3. Update Charts
+            if (charts.calories) {
+                charts.calories.data.datasets[0].label = t.chartCaloriesLabel;
+                charts.calories.options.plugins.title.text = splitLabel(t.chartCaloriesTitle);
+                charts.calories.update();
+            }
+            if (charts.call) {
+                charts.call.data.datasets[0].label = t.chartCallLabel;
+                charts.call.options.plugins.title.text = splitLabel(t.chartCallTitle);
+                charts.call.update();
+            }
+            if (charts.put) {
+                charts.put.data.labels = t.chartPutLabels.map(l => splitLabel(l));
+                charts.put.data.datasets[0].label = t.chartPutLabel;
+                charts.put.options.plugins.title.text = splitLabel(t.chartPutTitle);
+                charts.put.update();
+            }
+            if (charts.sellPut) {
+                charts.sellPut.data.labels = t.chartSellPutLabels.map(l => splitLabel(l));
+                charts.sellPut.data.datasets[0].label = t.chartSellPutLabel;
+                charts.sellPut.options.plugins.title.text = splitLabel(t.chartSellPutTitle);
+                charts.sellPut.update();
+            }
+            if (charts.rr) {
+                charts.rr.data.datasets[0].label = t.chartRRLabel;
+                charts.rr.options.plugins.title.text = splitLabel(t.chartRRTitle);
+                charts.rr.update();
+            }
+
+            // 4. Update Chat Welcome Message if Chat is Empty (Optional)
+            // Ideally we don't wipe chat history, but we can reset the welcome message logic if needed.
+        }
+
+        languageSelector.addEventListener('change', (e) => {
+            updateLanguage(e.target.value);
+        });
+
+        // --- CHAT WIDGET LOGIC ---
+        const toggleChatBtn = document.getElementById('toggleChatBtn');
+        const closeChatBtn = document.getElementById('closeChatBtn');
+        const chatWindow = document.getElementById('chatWindow');
+        const chatForm = document.getElementById('chatForm');
+        const userQuery = document.getElementById('userQuery');
+        const chatMessages = document.getElementById('chatMessages');
+
+        function toggleChat() {
+            chatWindow.classList.toggle('hidden');
+        }
+
+        function appendMessage(text, isUser) {
+            const div = document.createElement('div');
+            div.className = `flex gap-2 ${isUser ? 'justify-end' : ''}`;
+            
+            const bubble = document.createElement('div');
+            bubble.className = `p-3 rounded-lg max-w-[85%] text-sm ${isUser ? 'bg-pink-500 text-white rounded-tr-none' : 'bg-indigo-100 text-indigo-800 rounded-tl-none prose'}`;
+            
+            if (isUser) {
+                bubble.textContent = text;
+            } else {
+                bubble.innerHTML = marked.parse(text);
+            }
+            
+            div.appendChild(bubble);
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        toggleChatBtn.addEventListener('click', toggleChat);
+        closeChatBtn.addEventListener('click', toggleChat);
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const query = userQuery.value.trim();
+            if (!query) return;
+
+            // User Message
+            appendMessage(query, true);
+            userQuery.value = '';
+
+            // Loading state
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'flex gap-2';
+            loadingDiv.innerHTML = `<div class="bg-gray-200 text-gray-500 p-3 rounded-lg rounded-tl-none text-xs animate-pulse">AI...</div>`;
+            chatMessages.appendChild(loadingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // API Call with Language-Specific System Prompt
+            const responseText = await callGemini(query, systemPrompts[currentLang].tutor);
+            
+            // Remove loading and show response
+            chatMessages.removeChild(loadingDiv);
+            appendMessage(responseText, false);
+        });
+
+        // --- QUIZ GENERATOR LOGIC ---
+        const generateQuizBtn = document.getElementById('generateQuizBtn');
+        const quizContainer = document.getElementById('quizContainer');
+
+        generateQuizBtn.addEventListener('click', async () => {
+            quizContainer.classList.remove('hidden');
+            const t = translations[currentLang];
+            quizContainer.innerHTML = `
+                <div class="animate-pulse flex space-x-4">
+                    <div class="flex-1 space-y-4 py-1">
+                        <div class="h-4 bg-white/20 rounded w-3/4"></div>
+                        <div class="space-y-2">
+                            <div class="h-4 bg-white/20 rounded"></div>
+                            <div class="h-4 bg-white/20 rounded w-5/6"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center text-sm text-indigo-300 mt-4">${t.quizLoading}</p>
+            `;
+            
+            // Generate Quiz with Language-Specific Prompt
+            const quizContent = await callGemini("Generate a Risk Reversal Quiz", systemPrompts[currentLang].quiz);
+            
+            quizContainer.innerHTML = `
+                <div class="prose prose-invert max-w-none">
+                    ${marked.parse(quizContent)}
+                </div>
+                <button onclick="document.getElementById('quizContainer').classList.add('hidden')" class="mt-4 text-xs text-indigo-300 hover:text-white underline">✕</button>
+            `;
+        });
+
+        // --- UTILITY: Label Splitting Logic (16 chars) ---
+        function splitLabel(label) {
+            if (label.length <= 16) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + " " + words[i]).length <= 16) {
+                    currentLine += " " + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // --- GLOBAL CHART OPTIONS ---
+        Chart.defaults.font.family = "'Noto Sans SC', 'Noto Sans JP', 'Roboto', sans-serif";
+        Chart.defaults.color = '#4B5563';
+        
+        const commonTooltip = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        const responsiveConfig = {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' },
+                tooltip: commonTooltip
+            }
+        };
+
+        // --- CHART 1: CALORIES vs STOCK (Hook) ---
+        const ctxCalories = document.getElementById('caloriesChart').getContext('2d');
+        charts.calories = new Chart(ctxCalories, {
+            type: 'bar',
+            data: {
+                labels: ['日常晚餐卡路里', '感恩节晚餐卡路里'],
+                datasets: [{
+                    label: translations.zh.chartCaloriesLabel,
+                    data: [800, 3000],
+                    backgroundColor: ['#9CA3AF', '#EC4899'], // Gray vs Pink
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                ...responsiveConfig,
+                plugins: {
+                    ...responsiveConfig.plugins,
+                    title: {
+                        display: true,
+                        text: splitLabel(translations.zh.chartCaloriesTitle)
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true, title: {display: true, text: 'Kcal'} }
+                }
+            }
+        });
+
+        // --- CHART 2: CALL OPTION PAYOFF (Line) ---
+        // Scenario: Buy Call Strike $100, Premium $5.
+        // Range: 80 to 150
+        const callPrices = [80, 90, 100, 105, 120, 150];
+        const callPayoff = callPrices.map(p => {
+            // Profit = Max(Price - Strike, 0) - Premium
+            return Math.max(p - 100, 0) - 5;
+        });
+
+        const ctxCall = document.getElementById('callPayoffChart').getContext('2d');
+        charts.call = new Chart(ctxCall, {
+            type: 'line',
+            data: {
+                labels: callPrices.map(p => `$${p}`),
+                datasets: [{
+                    label: translations.zh.chartCallLabel,
+                    data: callPayoff,
+                    borderColor: '#4F46E5', // Indigo
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.1,
+                    pointBackgroundColor: callPayoff.map(v => v >= 0 ? '#10B981' : '#EF4444'),
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                ...responsiveConfig,
+                plugins: {
+                    ...responsiveConfig.plugins,
+                    title: { display: true, text: splitLabel(translations.zh.chartCallTitle) },
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line',
+                                yMin: 0,
+                                yMax: 0,
+                                borderColor: 'black',
+                                borderWidth: 1,
+                                borderDash: [5, 5]
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // --- CHART 3: PUT PROTECTION (Bar Comparison) ---
+        // Scenario: Stock crashes from 100 to 50.
+        // Portfolio A: No Put. Loss = 50.
+        // Portfolio B: With Put (Strike 100, Cost 5). Loss = Premium (5).
+        const ctxPut = document.getElementById('putProtectionChart').getContext('2d');
+        charts.put = new Chart(ctxPut, {
+            type: 'bar',
+            data: {
+                labels: [splitLabel('裸奔持有 (无保护)'), splitLabel('持有 Put 保护')],
+                datasets: [{
+                    label: translations.zh.chartPutLabel,
+                    data: [-50, -5],
+                    backgroundColor: ['#EF4444', '#10B981'], // Red vs Greenish
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                ...responsiveConfig,
+                indexAxis: 'y', // Horizontal Bar
+                plugins: {
+                    ...responsiveConfig.plugins,
+                    title: { display: true, text: splitLabel(translations.zh.chartPutTitle) }
+                }
+            }
+        });
+
+        // --- CHART 4: SELL PUT COST BASIS (Grouped Bar) ---
+        // Scenario: Target Buy Price. Current $100.
+        // Method A: Buy Now. Cost $100.
+        // Method B: Sell Put Strike $90, Premium $2. Effective Cost if exercised = 90 - 2 = 88.
+        const ctxSellPut = document.getElementById('sellPutChart').getContext('2d');
+        charts.sellPut = new Chart(ctxSellPut, {
+            type: 'bar',
+            data: {
+                labels: [splitLabel('直接买入现价股票'), splitLabel('卖出 Put 接盘')],
+                datasets: [{
+                    label: translations.zh.chartSellPutLabel,
+                    data: [100, 88],
+                    backgroundColor: ['#6B7280', '#06B6D4'], // Gray vs Cyan
+                    barThickness: 50,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                ...responsiveConfig,
+                scales: {
+                    y: { min: 80, title: {display: true, text: '每股成本 ($)'} }
+                },
+                plugins: {
+                    ...responsiveConfig.plugins,
+                    title: { display: true, text: splitLabel(translations.zh.chartSellPutTitle) }
+                }
+            }
+        });
+
+        // --- CHART 5: RISK REVERSAL PAYOFF (Line) ---
+        // Leg 1: Sell Put 97.5 (Receive 2)
+        // Leg 2: Buy Call 115 (Pay 2)
+        // Net Premium: 0
+        // P/L Logic:
+        // if Price < 97.5: Loss = Price - 97.5 (Obligated to buy at 97.5)
+        // if 97.5 <= Price <= 115: 0 (Put expires worthless, Call expires worthless)
+        // if Price > 115: Profit = Price - 115 (Call in the money)
+
+        const rrPrices = [80, 90, 97.5, 105, 110, 115, 125, 140];
+        const rrPayoff = rrPrices.map(p => {
+            let val = 0;
+            // Put Leg (Short 97.5)
+            if (p < 97.5) val -= (97.5 - p);
+            // Call Leg (Long 115)
+            if (p > 115) val += (p - 115);
+            return val;
+        });
+
+        const ctxRR = document.getElementById('riskReversalChart').getContext('2d');
+        charts.rr = new Chart(ctxRR, {
+            type: 'line',
+            data: {
+                labels: rrPrices.map(p => `$${p}`),
+                datasets: [{
+                    label: translations.zh.chartRRLabel,
+                    data: rrPayoff,
+                    borderColor: '#8B5CF6', // Violet
+                    borderWidth: 3,
+                    fill: {
+                        target: 'origin',
+                        above: 'rgba(16, 185, 129, 0.2)',   // Green area (Profit)
+                        below: 'rgba(239, 68, 68, 0.2)'     // Red area (Loss/Buy Stock)
+                    },
+                    tension: 0.2,
+                    pointBackgroundColor: '#FFFFFF',
+                    pointBorderColor: '#8B5CF6',
+                    pointRadius: 6
+                }]
+            },
+            options: {
+                ...responsiveConfig,
+                plugins: {
+                    ...responsiveConfig.plugins,
+                    title: { display: true, text: splitLabel(translations.zh.chartRRTitle) },
+                    annotation: {
+                        annotations: {
+                            lineZero: {
+                                type: 'line',
+                                yMin: 0,
+                                yMax: 0,
+                                borderColor: 'gray',
+                                borderWidth: 1
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: { title: {display: true, text: '盈亏 ($)'} }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
