@@ -146,7 +146,7 @@
                     </p>
                     <div class="bg-indigo-50 p-4 rounded-lg">
                         <p class="font-bold text-indigo-700 text-lg">"Bull Call Spread Risk Reversal"</p>
-                        <p class="text-xs text-indigo-500 mt-1" data-i18n="introStrategyNote">（这到底是什么缝合怪？）</p>
+                        <p class="text-xs text-indigo-500 mt-1" data-i18n="introStrategyNote">（中文名：牛市价差风险逆转策略 —— 名字是不是很长？）</p>
                     </div>
                 </div>
             </div>
@@ -165,6 +165,23 @@
                     <span class="text-4xl">🏠</span> <span data-i18n="callTitle">Call (认购期权)</span>
                 </h2>
                 <p class="text-gray-500 mt-2" data-i18n="callSubtitle">核心逻辑：交定金，锁价格 (Buy Low, Sell High)</p>
+            </div>
+
+            <!-- CONTRACT SIZE NOTE -->
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-yellow-700 font-bold" data-i18n="contractNote">
+                            ⚠️ 知识点：1 张期权合约 = 100 股股票。
+                            <span class="font-normal">（下文为方便理解，价格均为“单股”价格，实际交易需 x100）</span>
+                        </p>
+                    </div>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -217,13 +234,16 @@
                 <div class="order-1 md:order-2">
                     <h3 class="text-xl font-bold text-gray-800 mb-3" data-i18n="putAnalogyTitle">类比：车险</h3>
                     <p class="text-gray-600 mb-4 leading-relaxed" data-i18n="putAnalogyText">
-                        你买了股票怕跌？那就买 Put。就像给车买保险。
-                        如果股价崩盘（撞车），保险公司（卖Put的人）必须按<strong>原价</strong>接盘你的股票。
+                        想象你刚买了一辆特斯拉 Model Y (价值 $5万)。你怕撞车归零，于是花 $1000 买保险 (Put)。<br>
+                        <strong>保险条款 (行权价 $5万)：</strong><br>
+                        如果车子全损 (价值归 0)，保险公司赔你 $5万。
                     </p>
                     <div class="bg-pink-50 p-4 rounded border border-pink-200">
                         <p class="text-sm text-pink-800" data-i18n="putActionText">
-                            <strong>Buy Put:</strong> 付出一笔小钱，获得“无论跌多少都能按原价卖出”的权利。<br>
-                            <strong>场景:</strong> 财报发布前，担心暴雷。
+                            <strong>在股市里：</strong><br>
+                            你持有股票 (Model Y)，买入 Put (车险)。<br>
+                            即使公司倒闭 (股价归0)，你有权按 <strong>$5万 (行权价)</strong> 把废纸卖给保险公司。<br>
+                            你的最大损失仅为 $1000 (保费)。
                         </p>
                     </div>
                 </div>
@@ -236,19 +256,21 @@
                 <div>
                     <h2 class="text-3xl font-bold text-cyan-400 mb-4" data-i18n="sellPutTitle">为什么要做“保险公司” (Sell Put)?</h2>
                     <p class="text-gray-300 mb-6 text-lg leading-relaxed" data-i18n="sellPutIntro">
-                        初学者买保险，<strong>高手卖保险</strong>。
-                        如果你想像巴菲特一样思考，你不会单纯赌股票不跌，而是：
+                        对散户来说，卖保险听起来很疯狂。但对巴菲特来说，这是一笔完美的生意：
                     </p>
                     <div class="bg-gray-700 p-6 rounded-lg mb-6 border-l-4 border-cyan-400">
                         <p class="italic text-lg" data-i18n="sellPutQuote">
-                            "我想买这只股票，但现在的价格太贵。如果跌到 $90，我愿意全仓接盘。"
+                            "我想买这只股票，但现在的价格($100)太贵。如果跌到 $90，我愿意全仓接盘。"
                         </p>
                     </div>
-                    <p class="text-gray-300" data-i18n="sellPutLogic">
-                        你卖出 $90 的 Put，收取权利金。
-                        <br>1. <strong>没跌到 $90:</strong> 白赚权利金 (收租)。
-                        <br>2. <strong>跌到 $90:</strong> 按 $90 买入股票 (本来就想买的价格) - 权利金补贴。
-                    </p>
+                    <div class="space-y-4 text-gray-300" data-i18n="sellPutLogic">
+                        <p><strong>操作：</strong> 卖出 $90 的 Put，收入权利金。</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>场景 A (不跌)：</strong> 股价保持在 $100。你白赚权利金 (收租)。</li>
+                            <li><strong>场景 B (大跌)：</strong> 股价跌到 $80。你<strong>必须</strong>按 $90 买入。</li>
+                        </ul>
+                        <p class="text-cyan-300 font-bold mt-2">重点：反正你本来就想在 $90 买！现在你不仅买到了，还额外赚了一笔保险费。</p>
+                    </div>
                 </div>
                 <div>
                     <h3 class="text-xl font-bold text-gray-200 mb-4 text-center" data-i18n="sellPutChartTitle">实际持仓成本对比</h3>
@@ -280,7 +302,8 @@
                         卖出防跌保险<br>
                         "跌破97.5我接盘"
                     </p>
-                    <div class="mt-auto pt-4 font-bold text-green-600" data-i18n="rrStep1Profit">+ 收取权利金</div>
+                    <div class="text-xs text-gray-400 mt-1">Expire: Jan 19</div>
+                    <div class="mt-auto pt-4 font-bold text-green-600" data-i18n="rrStep1Profit">+ 收取 $2.00</div>
                 </div>
                 
                 <!-- Arrow -->
@@ -299,7 +322,8 @@
                         买入看涨权利<br>
                         "涨过115我赚钱"
                     </p>
-                    <div class="mt-auto pt-4 font-bold text-red-500" data-i18n="rrStep2Cost">- 支付权利金</div>
+                    <div class="text-xs text-gray-400 mt-1">Expire: Jan 19</div>
+                    <div class="mt-auto pt-4 font-bold text-red-500" data-i18n="rrStep2Cost">- 支付 $2.00</div>
                 </div>
             </div>
 
@@ -453,10 +477,11 @@
                 headerSubtitle: "Episode 1: 为什么我们要学期权？",
                 introTitle: "感恩节投机：吃出来的机会？",
                 introText: "故事从一个简单的逻辑开始：感恩节大家吃太多 -> 节后想要减肥 -> 健身房生意火爆。这也是为什么华尔街盯上了 Planet Fitness (星球健身)。但与其直接买股票，专家推荐了一个名字长到让人窒息的策略...",
-                introStrategyNote: "（这到底是什么缝合怪？）",
+                introStrategyNote: "（中文名：牛市价差风险逆转策略 —— 名字是不是很长？）",
                 introChartCaption: "3000大卡/顿的晚餐引发的投资蝴蝶效应",
                 callTitle: "Call (认购期权)",
                 callSubtitle: "核心逻辑：交定金，锁价格 (Buy Low, Sell High)",
+                contractNote: "⚠️ 知识点：1 张期权合约 = 100 股股票。<span class='font-normal'>（下文为方便理解，价格均为“单股”价格，实际交易需 x100）</span>",
                 callAnalogyTitle: "类比：买房定金",
                 callAnalogyText: "想象你看中一套100万的房子。你支付了 1万元定金 (权利金)，锁定了下个月用100万买房的权利。",
                 callScenarioWin: "<strong>若房价涨到120万：</strong> 你按100万买入，转手卖出赚20万。回报率 2000%！",
@@ -466,21 +491,21 @@
                 callChartCaption: "Call Option 损益曲线：风险有限，收益无限",
                 putTitle: "Put (认沽期权)",
                 putSubtitle: "核心逻辑：买保险，防灾害 (Hedging / Protection)",
-                putAnalogyTitle: "类比：车险",
-                putAnalogyText: "你买了股票怕跌？那就买 Put。就像给车买保险。如果股价崩盘（撞车），保险公司（卖Put的人）必须按<strong>原价</strong>接盘你的股票。",
-                putActionText: "<strong>Buy Put:</strong> 付出一笔小钱，获得“无论跌多少都能按原价卖出”的权利。<br><strong>场景:</strong> 财报发布前，担心暴雷。",
+                putAnalogyTitle: "类比：车险 (Tesla Model Y)",
+                putAnalogyText: "想象你刚买了一辆特斯拉 Model Y (价值 $5万)。你怕撞车归零，于是花 $1000 买保险 (Put)。<br><strong>保险条款 (行权价 $5万)：</strong><br>如果车子全损 (价值归 0)，保险公司赔你 $5万。",
+                putActionText: "<strong>在股市里：</strong><br>你持有股票 (Model Y)，买入 Put (车险)。<br>即使公司倒闭 (股价归0)，你有权按 <strong>$5万 (行权价)</strong> 把废纸卖给保险公司。<br>你的最大损失仅为 $1000 (保费)。",
                 sellPutTitle: "为什么要做“保险公司” (Sell Put)?",
-                sellPutIntro: "初学者买保险，<strong>高手卖保险</strong>。如果你想像巴菲特一样思考，你不会单纯赌股票不跌，而是：",
-                sellPutQuote: "\"我想买这只股票，但现在的价格太贵。如果跌到 $90，我愿意全仓接盘。\"",
-                sellPutLogic: "你卖出 $90 的 Put，收取权利金。<br>1. <strong>没跌到 $90:</strong> 白赚权利金 (收租)。<br>2. <strong>跌到 $90:</strong> 按 $90 买入股票 (本来就想买的价格) - 权利金补贴。",
+                sellPutIntro: "对散户来说，卖保险听起来很疯狂。但对巴菲特来说，这是一笔完美的生意：",
+                sellPutQuote: "\"我想买这只股票，但现在的价格($100)太贵。如果跌到 $90，我愿意全仓接盘。\"",
+                sellPutLogic: "<p><strong>操作：</strong> 卖出 $90 的 Put，收入权利金。</p><ul class='list-disc pl-5 space-y-2'><li><strong>场景 A (不跌)：</strong> 股价保持在 $100。你白赚权利金 (收租)。</li><li><strong>场景 B (大跌)：</strong> 股价跌到 $80。你<strong>必须</strong>按 $90 买入。</li></ul><p class='text-cyan-300 font-bold mt-2'>重点：反正你本来就想在 $90 买！现在你不仅买到了，还额外赚了一笔保险费。</p>",
                 sellPutChartTitle: "实际持仓成本对比",
                 sellPutChartCaption: "Sell Put = 带补贴的限价买单",
                 rrTitle: "终极策略: Risk Reversal (风险逆转)",
                 rrSubtitle: "不用掏钱的“空手套白狼”？<br><strong>逻辑：</strong> 用“愿意接盘的义务” (Sell Put) 赚来的钱，去买“上涨的定金” (Buy Call)。",
                 rrStep1: "卖出防跌保险<br>\"跌破97.5我接盘\"",
-                rrStep1Profit: "+ 收取权利金",
+                rrStep1Profit: "+ 收取 $2.00",
                 rrStep2: "买入看涨权利<br>\"涨过115我赚钱\"",
-                rrStep2Cost: "- 支付权利金",
+                rrStep2Cost: "- 支付 $2.00",
                 rrSummaryTitle: "策略总结",
                 rrSummaryWin: "<strong>大涨:</strong> 也就是股价 > 115，你拥有 Call，收益无限。",
                 rrSummaryDraw: "<strong>震荡:</strong> 在 97.5 和 115 之间，不亏不赚（因为权利金相互抵消了）。自带“安全缓冲区”。",
@@ -509,14 +534,15 @@
                 chartCaloriesTitle: "暴饮暴食驱动的健身需求",
                 chartCallLabel: "盈亏金额 ($)",
                 chartCallTitle: "Call Payoff: 股价涨得越高赚得越多",
-                chartPutLabels: ["裸奔持有 (无保护)", "持有 Put 保护"],
-                chartPutLabel: "股价腰斩时的亏损 ($)",
-                chartPutTitle: "当股价从 $100 跌到 $50",
+                chartPutLabels: ["不买保险 (裸奔)", "买了 Put (有保险)"],
+                chartPutLabel: "投资组合总价值 ($)",
+                chartPutTitle: "车祸现场 (股价暴跌)：有无保险的资产对比",
                 chartSellPutLabels: ["直接买入现价股票", "卖出 Put 接盘"],
                 chartSellPutLabel: "实际持仓成本 ($)",
                 chartSellPutTitle: "巴菲特如何用\"折扣价\"买股",
-                chartRRLabel: "Risk Reversal 损益",
-                chartRRTitle: "策略表现：下有接盘，上有暴利，中间躺平"
+                chartRRLabel: "Risk Reversal 策略",
+                chartRRStockLabel: "直接持有股票 (无保护)",
+                chartRRTitle: "策略对比：Risk Reversal vs 直接买正股"
             },
             en: {
                 headerTitle: "Options from Zero",
@@ -524,10 +550,11 @@
                 headerSubtitle: "Episode 1: Why learn Options?",
                 introTitle: "Thanksgiving Speculation",
                 introText: "Simple logic: Thanksgiving Overeating -> Post-holiday Weight Loss -> Gym Boom. That's why Wall Street is eyeing <strong>Planet Fitness</strong>. But experts recommend a strategy with a terrifyingly long name...",
-                introStrategyNote: "(What is this Frankenstein strategy?)",
+                introStrategyNote: "(Chinese Name: 牛市价差风险逆转策略 —— Long name, right?)",
                 introChartCaption: "Investment butterfly effect from a 3000 kcal dinner",
                 callTitle: "Call Option",
                 callSubtitle: "Logic: Down payment to lock price (Buy Low, Sell High)",
+                contractNote: "⚠️ Note: 1 Option Contract = 100 Shares. <span class='font-normal'>(Prices below are per share for simplicity, real trade is x100)</span>",
                 callAnalogyTitle: "Analogy: House Deposit",
                 callAnalogyText: "You see a $1M house. You pay <strong>$10k deposit (Premium)</strong> to lock the right to buy at $1M next month.",
                 callScenarioWin: "<strong>Price hits $1.2M:</strong> Buy at $1M, sell at $1.2M. Profit $200k (2000% return)!",
@@ -537,21 +564,21 @@
                 callChartCaption: "Call Payoff: Limited Risk, Unlimited Upside",
                 putTitle: "Put Option",
                 putSubtitle: "Logic: Insurance against disaster (Hedging)",
-                putAnalogyTitle: "Analogy: Car Insurance",
-                putAnalogyText: "Afraid your stock will crash? Buy a Put. Like car insurance. If it crashes, the insurer (Put Seller) MUST buy your stock at the <strong>Original Price</strong>.",
-                putActionText: "<strong>Buy Put:</strong> Pay small premium for right to sell at original price.<br><strong>Scenario:</strong> Earnings report protection.",
+                putAnalogyTitle: "Analogy: Car Insurance (Tesla Model Y)",
+                putAnalogyText: "Imagine you bought a Tesla Model Y ($50k). Afraid of totaling it, you buy insurance ($1k).<br><strong>Policy (Strike $50k):</strong><br>If the car is totaled (Value $0), insurance pays you $50k.",
+                putActionText: "<strong>In Stock Market:</strong><br>You own stock (Model Y), buy Put (Insurance).<br>Even if company goes bankrupt (Price $0), you sell the 'scrap' to insurer for <strong>$50k (Strike)</strong>.<br>Max loss is just $1k (Premium).",
                 sellPutTitle: "Why be the \"Insurer\" (Sell Put)?",
-                sellPutIntro: "Beginners buy insurance, <strong>Pros sell insurance</strong>. Like Buffett, you don't just gamble, you say:",
-                sellPutQuote: "\"I want to buy this stock, but it's too expensive. If it drops to $90, I'll buy it all.\"",
-                sellPutLogic: "Sell $90 Put, collect premium.<br>1. <strong>Above $90:</strong> Keep premium (Free money).<br>2. <strong>Drops to $90:</strong> Buy at $90 (Target Price) - Premium subsidy.",
+                sellPutIntro: "Beginners buy insurance, <strong>Pros sell insurance</strong>. Like Buffett, it's a perfect business:",
+                sellPutQuote: "\"I want to buy this stock, but it's too expensive ($100). If it drops to $90, I'll buy it all.\"",
+                sellPutLogic: "<p><strong>Action:</strong> Sell $90 Put, collect premium.</p><ul class='list-disc pl-5 space-y-2'><li><strong>Scenario A (Flat):</strong> Price stays $100. Keep premium (Free money).</li><li><strong>Scenario B (Crash):</strong> Price drops to $80. You <strong>MUST</strong> buy at $90.</li></ul><p class='text-cyan-300 font-bold mt-2'>Point: You wanted to buy at $90 anyway! Now you got the stock + extra cash.</p>",
                 sellPutChartTitle: "Cost Basis Comparison",
                 sellPutChartCaption: "Sell Put = Limit Order with Subsidy",
                 rrTitle: "Ultimate Strategy: Risk Reversal",
                 rrSubtitle: "Zero-Cost Entry?<br><strong>Logic:</strong> Use money from \"Obligation to Buy\" (Sell Put) to fund \"Right to Buy\" (Buy Call).",
                 rrStep1: "Sell Downside Insurance<br>\"I'll buy if < 97.5\"",
-                rrStep1Profit: "+ Collect Premium",
+                rrStep1Profit: "+ Collect $2.00",
                 rrStep2: "Buy Upside Potential<br>\"I profit if > 115\"",
-                rrStep2Cost: "- Pay Premium",
+                rrStep2Cost: "- Pay $2.00",
                 rrSummaryTitle: "Strategy Summary",
                 rrSummaryWin: "<strong>Rally:</strong> Price > 115. You own the Call. Unlimited profit.",
                 rrSummaryDraw: "<strong>Chop:</strong> Between 97.5 & 115. Breakeven (Premiums cancel out). Built-in buffer.",
@@ -580,14 +607,15 @@
                 chartCaloriesTitle: "Overeating driving Gym Demand",
                 chartCallLabel: "Profit/Loss ($)",
                 chartCallTitle: "Call Payoff: The higher it goes, the more you make",
-                chartPutLabels: ["Unprotected", "With Put Protection"],
-                chartPutLabel: "Loss on 50% Crash ($)",
-                chartPutTitle: "When stock drops $100 -> $50",
+                chartPutLabels: ["No Insurance", "With Put Protection"],
+                chartPutLabel: "Portfolio Value ($)",
+                chartPutTitle: "Car Crash (Market Crash): Asset Value Comparison",
                 chartSellPutLabels: ["Buy Stock Now", "Sell Put Entry"],
                 chartSellPutLabel: "Cost Basis ($)",
                 chartSellPutTitle: "Buffett's Discount Entry",
-                chartRRLabel: "Risk Reversal P/L",
-                chartRRTitle: "Performance: Downside Buy, Upside Profit, Flat Middle"
+                chartRRLabel: "Risk Reversal Strategy",
+                chartRRStockLabel: "Long Stock (No Protection)",
+                chartRRTitle: "Strategy Comparison: Risk Reversal vs Long Stock"
             },
             ja: {
                 headerTitle: "ゼロから始めるオプション",
@@ -595,10 +623,11 @@
                 headerSubtitle: "第1話：なぜオプションを学ぶのか？",
                 introTitle: "感謝祭の投機：食べ過ぎがチャンス？",
                 introText: "単純なロジックです。感謝祭で食べ過ぎる -> 減量したくなる -> ジムが儲かる。だからウォール街は <strong>Planet Fitness</strong> に注目しています。しかし専門家は恐ろしく長い名前の戦略を推奨しています...",
-                introStrategyNote: "（フランケンシュタインのような戦略？）",
+                introStrategyNote: "（中国語名：牛市价差风险逆转策略 —— 名前が長すぎますね？）",
                 introChartCaption: "3000kcalの夕食が引き起こす投資のバタフライ効果",
                 callTitle: "Call (コールオプション)",
                 callSubtitle: "ロジック：手付金で価格をロック (安く買って高く売る)",
+                contractNote: "⚠️ 知識点：1 オプション契約 = 100 株。<span class='font-normal'>（以下は分かりやすくするため1株あたりの価格です。実際の取引は x100）</span>",
                 callAnalogyTitle: "例え：家の手付金",
                 callAnalogyText: "1億円の家を見つけたとします。<strong>100万円の手付金（プレミアム）</strong>を払い、来月1億円で買う権利を確保します。",
                 callScenarioWin: "<strong>1.2億円に高騰：</strong> 1億で買い、1.2億で売る。2000万円の利益 (20倍)！",
@@ -608,21 +637,21 @@
                 callChartCaption: "Callの損益：リスク限定、利益無限大",
                 putTitle: "Put (プットオプション)",
                 putSubtitle: "ロジック：災害保険 (ヘッジ)",
-                putAnalogyTitle: "例え：自動車保険",
-                putAnalogyText: "株価暴落が怖い？ならPutを買いましょう。保険のようなものです。暴落しても、保険会社（Putの売り手）は<strong>元の価格</strong>であなたの株を買い取らなければなりません。",
-                putActionText: "<strong>Buy Put:</strong> 少額で「元の価格で売る権利」を買う。<br><strong>場面:</strong> 決算発表前の暴落対策。",
+                putAnalogyTitle: "例え：自動車保険 (Tesla Model Y)",
+                putAnalogyText: "テスラ Model Y ($5万) を買ったと想像してください。全損が怖いので $1000 で保険 (Put) を買います。<br><strong>保険条項 (行使価格 $5万)：</strong><br>車が全損 (価値 $0) しても、保険会社が $5万 支払います。",
+                putActionText: "<strong>株式市場では：</strong><br>株 (Model Y) を持ち、Put (保険) を買う。<br>会社が倒産 (株価 $0) しても、<strong>$5万 (行使価格)</strong> で保険会社に売却可能。<br>最大損失は $1000 (保険料) のみ。",
                 sellPutTitle: "なぜ「保険会社」になるのか (Sell Put)?",
-                sellPutIntro: "初心者は保険を買い、<strong>プロは保険を売ります</strong>。バフェットのように考えましょう：",
-                sellPutQuote: "「この株を買いたいが、今は高すぎる。もし$90まで下がったら、全力で買う。」",
-                sellPutLogic: "$90のPutを売り、プレミアムを受け取る。<br>1. <strong>$90以上:</strong> プレミアム丸儲け。<br>2. <strong>$90に下落:</strong> $90で株を買う (目標価格) - プレミアム分の割引。",
+                sellPutIntro: "初心者は保険を買い、<strong>プロは保険を売ります</strong>。バフェットにとって、これは完璧なビジネスです：",
+                sellPutQuote: "「この株を買いたいが、今は高すぎる($100)。もし$90まで下がったら、全力で買う。」",
+                sellPutLogic: "<p><strong>操作：</strong> $90のPutを売り、プレミアムを受取る。</p><ul class='list-disc pl-5 space-y-2'><li><strong>シナリオ A (下がらない)：</strong> 株価 $100 維持。プレミアム丸儲け。</li><li><strong>シナリオ B (暴落)：</strong> 株価 $80 に下落。あなたは $90 で買う<strong>義務</strong>がある。</li></ul><p class='text-cyan-300 font-bold mt-2'>ポイント：どうせ $90 で買いたかった！株も手に入り、お小遣いも増えた。</p>",
                 sellPutChartTitle: "取得コストの比較",
                 sellPutChartCaption: "Sell Put = 補助金付きの指値注文",
                 rrTitle: "究極の戦略: Risk Reversal",
                 rrSubtitle: "タダでエントリー？<br><strong>ロジック：</strong> 「買う義務」(Sell Put) で得た金で、「買う権利」(Buy Call) を買う。",
                 rrStep1: "下落保険を売る<br>「97.5以下なら買うよ」",
-                rrStep1Profit: "+ プレミアム受取",
+                rrStep1Profit: "+ 受取 $2.00",
                 rrStep2: "上昇益を買う<br>「115超えたら利益」",
-                rrStep2Cost: "- プレミアム支払",
+                rrStep2Cost: "- 支払 $2.00",
                 rrSummaryTitle: "戦略まとめ",
                 rrSummaryWin: "<strong>高騰:</strong> 株価 > 115。Callを持っているので利益無限大。",
                 rrSummaryDraw: "<strong>横ばい:</strong> 97.5 〜 115。損益分岐（プレミアム相殺）。安全バッファあり。",
@@ -651,14 +680,15 @@
                 chartCaloriesTitle: "過食が牽引するジム需要",
                 chartCallLabel: "損益額 ($)",
                 chartCallTitle: "Call Payoff: 上がるほど儲かる",
-                chartPutLabels: ["保護なし", "Put保護あり"],
-                chartPutLabel: "暴落時の損失 ($)",
-                chartPutTitle: "株価が $100 -> $50 に暴落した場合",
+                chartPutLabels: ["保険なし (裸)", "保険あり (Put)"],
+                chartPutLabel: "資産総額 ($)",
+                chartPutTitle: "事故発生 (暴落)：資産価値の比較",
                 chartSellPutLabels: ["現物買い", "Put売りエントリー"],
                 chartSellPutLabel: "取得コスト ($)",
                 chartSellPutTitle: "バフェット流の割引エントリー",
-                chartRRLabel: "Risk Reversal 損益",
-                chartRRTitle: "パフォーマンス：下がれば買い、上がれば爆益、中間は静観"
+                chartRRLabel: "Risk Reversal 戦略",
+                chartRRStockLabel: "現物株保有 (保護なし)",
+                chartRRTitle: "戦略比較：Risk Reversal vs 現物株"
             }
         };
 
@@ -815,9 +845,10 @@
                 charts.call.update();
             }
             if (charts.put) {
-                charts.put.data.labels = t.chartPutLabels.map(l => splitLabel(l));
-                charts.put.data.datasets[0].label = t.chartPutLabel;
+                charts.put.data.datasets[0].label = t.chartPutLabels[0]; // No Insurance
+                charts.put.data.datasets[1].label = t.chartPutLabels[1]; // With Insurance
                 charts.put.options.plugins.title.text = splitLabel(t.chartPutTitle);
+                charts.put.options.scales.y.title.text = t.chartPutLabel; // Axis Label
                 charts.put.update();
             }
             if (charts.sellPut) {
@@ -828,6 +859,7 @@
             }
             if (charts.rr) {
                 charts.rr.data.datasets[0].label = t.chartRRLabel;
+                charts.rr.data.datasets[1].label = t.chartRRStockLabel;
                 charts.rr.options.plugins.title.text = splitLabel(t.chartRRTitle);
                 charts.rr.update();
             }
@@ -1069,28 +1101,55 @@
             }
         });
 
-        // --- CHART 3: PUT PROTECTION (Bar Comparison) ---
-        // Scenario: Stock crashes from 100 to 50.
-        // Portfolio A: No Put. Loss = 50.
-        // Portfolio B: With Put (Strike 100, Cost 5). Loss = Premium (5).
+        // --- CHART 3: PUT PROTECTION (Line Chart - NEW) ---
+        // Scenario: Stock crashes from $50 (Entry) to $0.
+        // X Axis: Future Car Value (Stock Price) $0 -> $60
+        // Line 1 (Unprotected): Value = x
+        // Line 2 (Protected): Value = Max(x, 50) - 1 (Premium)
+        // Range: 0, 10, 20, 30, 40, 50, 60
+        const putPrices = [0, 10, 20, 30, 40, 50, 60];
+        const unProtectedValue = putPrices; // Value = Price
+        const protectedValue = putPrices.map(p => Math.max(p, 50) - 1); // Strike 50, Premium 1
+
         const ctxPut = document.getElementById('putProtectionChart').getContext('2d');
         charts.put = new Chart(ctxPut, {
-            type: 'bar',
+            type: 'line',
             data: {
-                labels: [splitLabel('裸奔持有 (无保护)'), splitLabel('持有 Put 保护')],
-                datasets: [{
-                    label: translations.zh.chartPutLabel,
-                    data: [-50, -5],
-                    backgroundColor: ['#EF4444', '#10B981'], // Red vs Greenish
-                    borderRadius: 6
-                }]
+                labels: putPrices.map(p => `$${p}k`),
+                datasets: [
+                    {
+                        label: translations.zh.chartPutLabels[0], // Unprotected
+                        data: unProtectedValue,
+                        borderColor: '#9CA3AF', // Gray
+                        borderDash: [5, 5],
+                        borderWidth: 2,
+                        pointRadius: 0
+                    },
+                    {
+                        label: translations.zh.chartPutLabels[1], // Protected
+                        data: protectedValue,
+                        borderColor: '#EC4899', // Pink
+                        backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                        borderWidth: 3,
+                        fill: true
+                    }
+                ]
             },
             options: {
                 ...responsiveConfig,
-                indexAxis: 'y', // Horizontal Bar
                 plugins: {
                     ...responsiveConfig.plugins,
-                    title: { display: true, text: splitLabel(translations.zh.chartPutTitle) }
+                    title: { display: true, text: splitLabel(translations.zh.chartPutTitle) },
+                    tooltip: {
+                         callbacks: {
+                            title: (tooltipItems) => `车值: ${tooltipItems[0].label}`,
+                            label: (context) => `${context.dataset.label}: $${context.raw}k`
+                        }
+                    }
+                },
+                scales: {
+                    y: { title: {display: true, text: '资产总值 ($k)'} },
+                    x: { title: {display: true, text: '未来车价/股价 ($k)'} }
                 }
             }
         });
@@ -1124,45 +1183,59 @@
             }
         });
 
-        // --- CHART 5: RISK REVERSAL PAYOFF (Line) ---
+        // --- CHART 5: RISK REVERSAL PAYOFF vs LONG STOCK (Line) ---
         // Leg 1: Sell Put 97.5 (Receive 2)
         // Leg 2: Buy Call 115 (Pay 2)
         // Net Premium: 0
-        // P/L Logic:
-        // if Price < 97.5: Loss = Price - 97.5 (Obligated to buy at 97.5)
-        // if 97.5 <= Price <= 115: 0 (Put expires worthless, Call expires worthless)
-        // if Price > 115: Profit = Price - 115 (Call in the money)
-
-        const rrPrices = [80, 90, 97.5, 105, 110, 115, 125, 140];
-        const rrPayoff = rrPrices.map(p => {
+        // Comparison: Long Stock at Current Price ~103 (Mid point)
+        
+        const rrPrices2 = [80, 90, 97.5, 103, 110, 115, 125, 140];
+        const entryPrice = 103;
+        
+        const rrPayoff2 = rrPrices2.map(p => {
             let val = 0;
-            // Put Leg (Short 97.5)
-            if (p < 97.5) val -= (97.5 - p);
-            // Call Leg (Long 115)
-            if (p > 115) val += (p - 115);
-            return val;
+            // Put Leg (Short 97.5) -> Obligation to buy at 97.5
+            // If p < 97.5, we lose (97.5 - p) relative to cash, effectively owning stock at 97.5
+            // Standard P/L diagram relative to strike: 
+            // Short Put P/L = -(Max(97.5 - p, 0)) + 2
+            // Long Call P/L = Max(p - 115, 0) - 2
+            // Total RR P/L
+            const putPL = -Math.max(97.5 - p, 0) + 2;
+            const callPL = Math.max(p - 115, 0) - 2;
+            return putPL + callPL;
         });
+
+        const stockPayoff = rrPrices2.map(p => p - entryPrice); // Simple P/L: Price - Entry
 
         const ctxRR = document.getElementById('riskReversalChart').getContext('2d');
         charts.rr = new Chart(ctxRR, {
             type: 'line',
             data: {
-                labels: rrPrices.map(p => `$${p}`),
-                datasets: [{
-                    label: translations.zh.chartRRLabel,
-                    data: rrPayoff,
-                    borderColor: '#8B5CF6', // Violet
-                    borderWidth: 3,
-                    fill: {
-                        target: 'origin',
-                        above: 'rgba(16, 185, 129, 0.2)',   // Green area (Profit)
-                        below: 'rgba(239, 68, 68, 0.2)'     // Red area (Loss/Buy Stock)
+                labels: rrPrices2.map(p => `$${p}`),
+                datasets: [
+                    {
+                        label: translations.zh.chartRRLabel,
+                        data: rrPayoff2,
+                        borderColor: '#8B5CF6', // Violet
+                        borderWidth: 3,
+                        fill: false, // Don't fill for cleaner comparison
+                        tension: 0.2,
+                        pointBackgroundColor: '#FFFFFF',
+                        pointBorderColor: '#8B5CF6',
+                        pointRadius: 6,
+                        order: 1
                     },
-                    tension: 0.2,
-                    pointBackgroundColor: '#FFFFFF',
-                    pointBorderColor: '#8B5CF6',
-                    pointRadius: 6
-                }]
+                    {
+                        label: translations.zh.chartRRStockLabel,
+                        data: stockPayoff,
+                        borderColor: '#9CA3AF', // Gray
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                        tension: 0,
+                        order: 2
+                    }
+                ]
             },
             options: {
                 ...responsiveConfig,
