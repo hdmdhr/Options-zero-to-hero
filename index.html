@@ -177,7 +177,7 @@
                     </div>
                     <div class="ml-3">
                         <p class="text-sm text-yellow-700 font-bold" data-i18n="contractNote">
-                            ⚠️ 知识点：1 张期权合约 = 100 股股票。
+                            知识点：1 张期权合约 = 100 股股票。
                             <span class="font-normal">（下文为方便理解，价格均为“单股”价格，实际交易需 x100）</span>
                         </p>
                     </div>
@@ -264,7 +264,7 @@
                         </p>
                     </div>
                     <div class="space-y-4 text-gray-300" data-i18n="sellPutLogic">
-                        <p><strong>操作：</strong> 卖出 $90 的 Put，收入权利金。</p>
+                        <p><strong>操作：</strong> 卖出 $90 的 Put，收入 $2 权利金。</p>
                         <ul class="list-disc pl-5 space-y-2">
                             <li><strong>场景 A (不跌)：</strong> 股价保持在 $100。你白赚权利金 (收租)。</li>
                             <li><strong>场景 B (大跌)：</strong> 股价跌到 $80。你<strong>必须</strong>按 $90 买入。</li>
@@ -285,7 +285,7 @@
         <!-- SECTION 5: THE SOLUTION - RISK REVERSAL -->
         <section id="risk-reversal" class="bg-gradient-to-br from-indigo-50 to-white rounded-2xl shadow-lg p-8 relative">
             <div class="text-center max-w-3xl mx-auto mb-10">
-                <h2 class="text-3xl font-bold text-indigo-800 mb-4" data-i18n="rrTitle">终极策略: Risk Reversal (风险逆转)</h2>
+                <h2 class="text-3xl font-bold text-indigo-800 mb-4" data-i18n="rrTitle">组合技策略: Risk Reversal (风险逆转)</h2>
                 <p class="text-gray-600 text-lg" data-i18n="rrSubtitle">
                     不用掏钱的“空手套白狼”？<br>
                     <strong>逻辑：</strong> 用“愿意接盘的义务” (Sell Put) 赚来的钱，去买“上涨的定金” (Buy Call)。
@@ -302,7 +302,7 @@
                         卖出防跌保险<br>
                         "跌破97.5我接盘"
                     </p>
-                    <div class="text-xs text-gray-400 mt-1">Expire: Jan 19</div>
+                    <div class="text-xs text-gray-400 mt-1">Expire: December 5, 2025</div>
                     <div class="mt-auto pt-4 font-bold text-green-600" data-i18n="rrStep1Profit">+ 收取 $2.00</div>
                 </div>
                 
@@ -322,7 +322,7 @@
                         买入看涨权利<br>
                         "涨过115我赚钱"
                     </p>
-                    <div class="text-xs text-gray-400 mt-1">Expire: Jan 19</div>
+                    <div class="text-xs text-gray-400 mt-1">Expire: December 5, 2025</div>
                     <div class="mt-auto pt-4 font-bold text-red-500" data-i18n="rrStep2Cost">- 支付 $2.00</div>
                 </div>
             </div>
@@ -481,7 +481,7 @@
                 introChartCaption: "3000大卡/顿的晚餐引发的投资蝴蝶效应",
                 callTitle: "Call (认购期权)",
                 callSubtitle: "核心逻辑：交定金，锁价格 (Buy Low, Sell High)",
-                contractNote: "⚠️ 知识点：1 张期权合约 = 100 股股票。<span class='font-normal'>（下文为方便理解，价格均为“单股”价格，实际交易需 x100）</span>",
+                contractNote: "知识点：1 张期权合约 = 100 股股票。<span class='font-normal'>（下文为方便理解，价格均为“单股”价格，实际交易需 x100）</span>",
                 callAnalogyTitle: "类比：买房定金",
                 callAnalogyText: "想象你看中一套100万的房子。你支付了 1万元定金 (权利金)，锁定了下个月用100万买房的权利。",
                 callScenarioWin: "<strong>若房价涨到120万：</strong> 你按100万买入，转手卖出赚20万。回报率 2000%！",
@@ -497,10 +497,10 @@
                 sellPutTitle: "为什么要做“保险公司” (Sell Put)?",
                 sellPutIntro: "对散户来说，卖保险听起来很疯狂。但对巴菲特来说，这是一笔完美的生意：",
                 sellPutQuote: "\"我想买这只股票，但现在的价格($100)太贵。如果跌到 $90，我愿意全仓接盘。\"",
-                sellPutLogic: "<p><strong>操作：</strong> 卖出 $90 的 Put，收入权利金。</p><ul class='list-disc pl-5 space-y-2'><li><strong>场景 A (不跌)：</strong> 股价保持在 $100。你白赚权利金 (收租)。</li><li><strong>场景 B (大跌)：</strong> 股价跌到 $80。你<strong>必须</strong>按 $90 买入。</li></ul><p class='text-cyan-300 font-bold mt-2'>重点：反正你本来就想在 $90 买！现在你不仅买到了，还额外赚了一笔保险费。</p>",
+                sellPutLogic: "<p><strong>操作：</strong> 卖出 $90 的 Put，收入 $2 的权利金。</p><ul class='list-disc pl-5 space-y-2'><li><strong>场景 A (不跌)：</strong> 股价保持在 $100。你白赚权利金 (收租)。</li><li><strong>场景 B (大跌)：</strong> 股价跌到 $80。你<strong>必须</strong>按 $90 买入。实际成本为 $88 ($90 - $2)。</li></ul><p class='text-cyan-300 font-bold mt-2'>重点：反正你本来就想在 $90 买！现在你不仅买到了，还额外赚了一笔保险费。</p>",
                 sellPutChartTitle: "实际持仓成本对比",
                 sellPutChartCaption: "Sell Put = 带补贴的限价买单",
-                rrTitle: "终极策略: Risk Reversal (风险逆转)",
+                rrTitle: "组合技策略: Risk Reversal (风险逆转)",
                 rrSubtitle: "不用掏钱的“空手套白狼”？<br><strong>逻辑：</strong> 用“愿意接盘的义务” (Sell Put) 赚来的钱，去买“上涨的定金” (Buy Call)。",
                 rrStep1: "卖出防跌保险<br>\"跌破97.5我接盘\"",
                 rrStep1Profit: "+ 收取 $2.00",
@@ -550,11 +550,11 @@
                 headerSubtitle: "Episode 1: Why learn Options?",
                 introTitle: "Thanksgiving Speculation",
                 introText: "Simple logic: Thanksgiving Overeating -> Post-holiday Weight Loss -> Gym Boom. That's why Wall Street is eyeing <strong>Planet Fitness</strong>. But experts recommend a strategy with a terrifyingly long name...",
-                introStrategyNote: "(Chinese Name: 牛市价差风险逆转策略 —— Long name, right?)",
+                introStrategyNote: "(Long name, right?)",
                 introChartCaption: "Investment butterfly effect from a 3000 kcal dinner",
                 callTitle: "Call Option",
                 callSubtitle: "Logic: Down payment to lock price (Buy Low, Sell High)",
-                contractNote: "⚠️ Note: 1 Option Contract = 100 Shares. <span class='font-normal'>(Prices below are per share for simplicity, real trade is x100)</span>",
+                contractNote: "Note: 1 Option Contract = 100 Shares. <span class='font-normal'>(Prices below are per share for simplicity, real trade is x100)</span>",
                 callAnalogyTitle: "Analogy: House Deposit",
                 callAnalogyText: "You see a $1M house. You pay <strong>$10k deposit (Premium)</strong> to lock the right to buy at $1M next month.",
                 callScenarioWin: "<strong>Price hits $1.2M:</strong> Buy at $1M, sell at $1.2M. Profit $200k (2000% return)!",
@@ -573,7 +573,7 @@
                 sellPutLogic: "<p><strong>Action:</strong> Sell $90 Put, collect premium.</p><ul class='list-disc pl-5 space-y-2'><li><strong>Scenario A (Flat):</strong> Price stays $100. Keep premium (Free money).</li><li><strong>Scenario B (Crash):</strong> Price drops to $80. You <strong>MUST</strong> buy at $90.</li></ul><p class='text-cyan-300 font-bold mt-2'>Point: You wanted to buy at $90 anyway! Now you got the stock + extra cash.</p>",
                 sellPutChartTitle: "Cost Basis Comparison",
                 sellPutChartCaption: "Sell Put = Limit Order with Subsidy",
-                rrTitle: "Ultimate Strategy: Risk Reversal",
+                rrTitle: "Combination Strategy: Risk Reversal",
                 rrSubtitle: "Zero-Cost Entry?<br><strong>Logic:</strong> Use money from \"Obligation to Buy\" (Sell Put) to fund \"Right to Buy\" (Buy Call).",
                 rrStep1: "Sell Downside Insurance<br>\"I'll buy if < 97.5\"",
                 rrStep1Profit: "+ Collect $2.00",
@@ -623,11 +623,11 @@
                 headerSubtitle: "第1話：なぜオプションを学ぶのか？",
                 introTitle: "感謝祭の投機：食べ過ぎがチャンス？",
                 introText: "単純なロジックです。感謝祭で食べ過ぎる -> 減量したくなる -> ジムが儲かる。だからウォール街は <strong>Planet Fitness</strong> に注目しています。しかし専門家は恐ろしく長い名前の戦略を推奨しています...",
-                introStrategyNote: "（中国語名：牛市价差风险逆转策略 —— 名前が長すぎますね？）",
+                introStrategyNote: "（名前が長すぎるよね？）",
                 introChartCaption: "3000kcalの夕食が引き起こす投資のバタフライ効果",
                 callTitle: "Call (コールオプション)",
                 callSubtitle: "ロジック：手付金で価格をロック (安く買って高く売る)",
-                contractNote: "⚠️ 知識点：1 オプション契約 = 100 株。<span class='font-normal'>（以下は分かりやすくするため1株あたりの価格です。実際の取引は x100）</span>",
+                contractNote: "知識点：1 オプション契約 = 100 株。<span class='font-normal'>（以下は分かりやすくするため1株あたりの価格です。実際の取引は x100）</span>",
                 callAnalogyTitle: "例え：家の手付金",
                 callAnalogyText: "1億円の家を見つけたとします。<strong>100万円の手付金（プレミアム）</strong>を払い、来月1億円で買う権利を確保します。",
                 callScenarioWin: "<strong>1.2億円に高騰：</strong> 1億で買い、1.2億で売る。2000万円の利益 (20倍)！",
@@ -646,7 +646,7 @@
                 sellPutLogic: "<p><strong>操作：</strong> $90のPutを売り、プレミアムを受取る。</p><ul class='list-disc pl-5 space-y-2'><li><strong>シナリオ A (下がらない)：</strong> 株価 $100 維持。プレミアム丸儲け。</li><li><strong>シナリオ B (暴落)：</strong> 株価 $80 に下落。あなたは $90 で買う<strong>義務</strong>がある。</li></ul><p class='text-cyan-300 font-bold mt-2'>ポイント：どうせ $90 で買いたかった！株も手に入り、お小遣いも増えた。</p>",
                 sellPutChartTitle: "取得コストの比較",
                 sellPutChartCaption: "Sell Put = 補助金付きの指値注文",
-                rrTitle: "究極の戦略: Risk Reversal",
+                rrTitle: "組み合わせ戦略: Risk Reversal",
                 rrSubtitle: "タダでエントリー？<br><strong>ロジック：</strong> 「買う義務」(Sell Put) で得た金で、「買う権利」(Buy Call) を買う。",
                 rrStep1: "下落保険を売る<br>「97.5以下なら買うよ」",
                 rrStep1Profit: "+ 受取 $2.00",
