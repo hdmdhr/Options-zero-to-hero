@@ -203,9 +203,10 @@
                     <div class="bg-blue-50 p-4 rounded border border-blue-200">
                         <h4 class="font-bold text-blue-800" data-i18n="callExampleTitle">股市实例：英伟达 (NVDA)</h4>
                         <p class="text-sm text-blue-700 mt-1" data-i18n="callExampleText">
-                            股价 $100。你花 $5 买入 Call (行权价 $100)。<br>
-                            如果涨到 $150，你赚 $45 ($150 - $100 - $5)。<br>
-                            翻了9倍！这就是<strong>以小博大</strong>。
+                            行权价 $175，权利金 $5.125，到期日 12月26日。<br>
+                            你花 $512.50 买入 1 份 Call (100股)。<br>
+                            盈亏平衡点：$180.125。如果涨到 $220，你赚 $3,987.50！翻了近8倍！<br>
+                            这就是以小博大的<strong>杠杆效应</strong>的魅力。
                         </p>
                     </div>
                 </div>
@@ -487,7 +488,7 @@
                 callScenarioWin: "<strong>若房价涨到120万：</strong> 你按100万买入，转手卖出赚20万。回报率 2000%！",
                 callScenarioLose: "<strong>若房价跌到80万：</strong> 你放弃定金，只损失1万。房子不要了。",
                 callExampleTitle: "股市实例：英伟达 (NVDA)",
-                callExampleText: "股价 $100。你花 $5 买入 Call (行权价 $100)。<br>如果涨到 $150，你赚 $45 ($150 - $100 - $5)。<br>翻了9倍！这就是<strong>以小博大</strong>。",
+                callExampleText: "行权价 $175，权利金 $5.125，到期日 12月26日。<br>你花 $512.50 买入 1 份 Call (100股)。<br>盈亏平衡点：$180.125。如果涨到 $220，你赚 $3,987.50！翻了近8倍！<br>这就是以小博大的<strong>杠杆效应</strong>的魅力。",
                 callChartCaption: "Call Option 损益曲线：风险有限，收益无限",
                 putTitle: "Put (认沽期权)",
                 putSubtitle: "核心逻辑：买保险，防灾害 (Hedging / Protection)",
@@ -560,7 +561,7 @@
                 callScenarioWin: "<strong>Price hits $1.2M:</strong> Buy at $1M, sell at $1.2M. Profit $200k (2000% return)!",
                 callScenarioLose: "<strong>Price drops to $800k:</strong> Walk away. Lose only deposit ($10k).",
                 callExampleTitle: "Stock Example: NVIDIA (NVDA)",
-                callExampleText: "Stock $100. Buy Call (Strike $100) for $5.<br>If it hits $150, you earn $45 ($150 - $100 - $5).<br>9x Return! This is <strong>Leverage</strong>.",
+                callExampleText: "Strike $175, Premium $5.125, Expiry Dec 26.<br>You pay $512.50 for 1 Call (100 shares).<br>Breakeven: $180.125. If it hits $220, you profit $3,987.50! Nearly 8x return!<br>This is the power of <strong>Leverage</strong>.",
                 callChartCaption: "Call Payoff: Limited Risk, Unlimited Upside",
                 putTitle: "Put Option",
                 putSubtitle: "Logic: Insurance against disaster (Hedging)",
@@ -633,7 +634,7 @@
                 callScenarioWin: "<strong>1.2億円に高騰：</strong> 1億で買い、1.2億で売る。2000万円の利益 (20倍)！",
                 callScenarioLose: "<strong>8000万円に暴落：</strong> 権利放棄。損失は手付金の100万円のみ。",
                 callExampleTitle: "株式の例：NVIDIA (NVDA)",
-                callExampleText: "株価 $100。$5でCall (行使価格 $100) を購入。<br>$150になれば、$45の利益 ($150 - $100 - $5)。<br>9倍のリターン！これが<strong>レバレッジ</strong>です。",
+                callExampleText: "行使価格 $175、プレミアム $5.125、満期日 12月26日。<br>$512.50 で 1 契約 (100株) を購入。<br>損益分岐点：$180.125。$220になれば、$3,987.50 の利益！約8倍！<br>これが<strong>レバレッジ</strong>の力です。",
                 callChartCaption: "Callの損益：リスク限定、利益無限大",
                 putTitle: "Put (プットオプション)",
                 putSubtitle: "ロジック：災害保険 (ヘッジ)",
@@ -1055,12 +1056,12 @@
         });
 
         // --- CHART 2: CALL OPTION PAYOFF (Line) ---
-        // Scenario: Buy Call Strike $100, Premium $5.
-        // Range: 80 to 150
-        const callPrices = [80, 90, 100, 105, 120, 150];
+        // Scenario: Buy Call Strike $175, Premium $5.125 (NVDA Real Example)
+        // Range: 150 to 220
+        const callPrices = [150, 160, 170, 175, 180, 190, 200, 220];
         const callPayoff = callPrices.map(p => {
             // Profit = Max(Price - Strike, 0) - Premium
-            return Math.max(p - 100, 0) - 5;
+            return Math.max(p - 175, 0) - 5.125;
         });
 
         const ctxCall = document.getElementById('callPayoffChart').getContext('2d');
